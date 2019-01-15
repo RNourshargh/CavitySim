@@ -1,7 +1,8 @@
 function [ ROC ] = ABCDroc( ABCD )
 %This funntion calculates the radius of curvature (in metres) of the fundamental
 %gausian mode of a cavity in the loacation at which the
-%ABCD matrix is evaluated. i.e. the intial plane.
+%ABCD matrix is evaluated. i.e. the intial plane. This should be set as the
+%largest beam waist in the cavity.
 A = ABCD(1,1);
 B = ABCD(1,2);
 C = ABCD(2,1);
