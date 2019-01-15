@@ -6,6 +6,7 @@ function [] = InitialiseCavityPath()
 %*******This should be rewritten to import the path from a file
 oldpath = path;
 oldpath=path(oldpath,'D:\OneDrive\Documents\Subject Notes\PhD\Year2\Cavity\CavityMatlab\Functions');
-path(oldpath,'D:\OneDrive\Documents\Subject Notes\PhD\Year2\Cavity\CavityMatlab')
+oldpath=path(oldpath,'D:\OneDrive\Documents\Subject Notes\PhD\Year2\Cavity\CavityMatlab\optics');
+path(oldpath,'D:\OneDrive\Documents\Subject Notes\PhD\Year2\Cavity\CavityMatlab');
 end
 
