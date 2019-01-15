@@ -4,7 +4,7 @@ function [] = InitialiseCavityPath()
 %These locations can be removed by running CleanCavityPath()
 
 %Make an array containing the new locations
-NewPathsArray = ImportCavPath();
+NewPathsArray = ReadCavPathFile();
 
 %Find the size of this array = number of new locations to add
 L = size(NewPathsArray,1);

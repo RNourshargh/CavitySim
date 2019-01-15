@@ -4,7 +4,7 @@ function [] = CleanCavityPath()
 %These locations can be reinstalled by running InitialiseCavityPath()
 
 %Make an array containing the cavity path locations
-NewPathsArray = ImportCavPath();
+NewPathsArray = ReadCavPathFile();
 
 %Find the size of this array = number of locations to remove
 L = size(NewPathsArray,1);
