@@ -1,4 +1,4 @@
-function [ABCD,OPL] = LensVThinABCD(LensFile)
+function [ABCD,OPL] = LensThinVacABCD(LensFile)
 %LensThinABCD Imports a lens file and outputs ABCD matrix with the
 %thin lens approximation and additional optical path length OPL. It is only
 %valid under the thin lens approximation in a vacuum
