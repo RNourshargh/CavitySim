@@ -1,0 +1,8 @@
+PathFreeSpace(0.15)
+LensThinVacABCD("LensPos0100mm.csv")
+PathFreeSpace(0.15)
+MirrorFlatOrthogonal()
+PathFreeSpace(0.15)
+LensThinVacABCD("LensPos0100mm.csv")
+PathFreeSpace(0.15)
+MirrorFlatOrthogonal()
