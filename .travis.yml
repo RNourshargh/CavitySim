@@ -6,6 +6,7 @@ python:
 
 before_install:
   - pip install pip --upgrade
+  - pip install pytest --upgrade  # needed to update default pytest
 
 install:
   - pip install -e .[test]
