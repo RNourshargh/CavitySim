@@ -1,7 +1,7 @@
 import numpy as np
 
 
-from cavitysim.utils import path_free_space, rayleigh_range_w0, radius_from_q
+from cavitysim.utils import path_free_space, rayleigh_range_w0, radius_from_q, lens_thin_vacuum_abcd, mirror_planar_normal
 
 
 def test_pathfreespace():
@@ -21,7 +21,6 @@ def test_rayleighrangew0():
     expected_rayleigh_range = np.pi*test_w0**2/test_wavelength
     result_rayleigh_range = rayleigh_range_w0(test_w0)
     
-    np.testing.assert_allclose(expected_rayleigh_range, result_rayleigh_range)
     assert expected_rayleigh_range == result_rayleigh_range
 
 def test_radiusfromq():
@@ -30,7 +29,25 @@ def test_radiusfromq():
     expected_beam_radius = 0.001245429726319377
     result_beam_radius = radius_from_q(test_q)
     np.testing.assert_allclose(expected_beam_radius, result_beam_radius)
-    assert expected_beam_radius == result_beam_radius
     
+def test_lensthinvac():
+    test_f = 0.1
+    
+    expected_abcd= np.matrix([[1,0],[-10,1]])
+    expected_opl = 0   
+    
+    result_abcd,result_opl = lens_thin_vacuum_abcd(test_f)
+    
+    np.testing.assert_allclose(expected_abcd, result_abcd)
+    assert expected_opl == result_opl
+
+def test_mirrorplanarnorm():
+    expected_abcd= np.matrix([[1,0],[0,1]])
+    expected_opl = 0   
+    
+    result_abcd,result_opl = mirror_planar_normal()
+    
+    np.testing.assert_allclose(expected_abcd, result_abcd)
+    assert expected_opl == result_opl    
 
 test_wavelength = 780E-9
