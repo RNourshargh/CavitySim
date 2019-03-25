@@ -1,7 +1,7 @@
 import numpy as np
 
 
-from cavitysim.utils import path_free_space, rayleigh_range_w0
+from cavitysim.utils import path_free_space, rayleigh_range_w0, radius_from_q
 
 
 def test_pathfreespace():
@@ -18,10 +18,19 @@ def test_pathfreespace():
 def test_rayleighrangew0():
     test_w0 = 500E-6
     
-    expected_rayleigh_range = np.pi*test_w0**2/wavelength
+    expected_rayleigh_range = np.pi*test_w0**2/test_wavelength
     result_rayleigh_range = rayleigh_range_w0(test_w0)
     
     np.testing.assert_allclose(expected_rayleigh_range, result_rayleigh_range)
     assert expected_rayleigh_range == result_rayleigh_range
 
-wavelength = 780E-9
+def test_radiusfromq():
+    test_q=0.5  +   1j*np.pi*(0.1e-3)**2/test_wavelength
+    
+    expected_beam_radius = 0.001245429726319377
+    result_beam_radius = radius_from_q(test_q)
+    np.testing.assert_allclose(expected_beam_radius, result_beam_radius)
+    assert expected_beam_radius == result_beam_radius
+    
+
+test_wavelength = 780E-9
