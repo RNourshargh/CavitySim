@@ -65,7 +65,7 @@ def abcd_stability(abcd):
         print("Cavity is stable")
         print("A+D = " +str(AD))
         CavStab = True
-    else (AD>2) or (AD<-2):
+    else: #(AD>2) or (AD<-2):
         print("Cavity is unstable")
         print("A+D = " +str(AD))
         CavStab = False
