@@ -1,16 +1,30 @@
 import numpy as np
 
-
-
-
-def path_free_space(path_length, n0):
+class lens_thin_vac(object):
+    """A thin lens in a vacuum
+    
+    Attributes:
+        f: focal length
     """
-    Zeb's example. Careful Doesn't really work
+    
+    def __init__(self, f):
+        self.f = f
+        
+    def abcd(self):
+        """Generate the abcd matrix for the thin lens"""
+        return np.matrix([[1,0],[-1/(self.f) , 1]])
+    
+    def opl(self):
+        """Calculate the optical path length for the thin lens"""
+        return 0
+  
+
+def path_constant_index(path_length):
+    """
+    generate the abcd matrix for propagation in a medium of constant refractive index
     """
     abcd = np.array([[1, path_length], [0, 1]])
-    opl = path_length*n0
-
-    return abcd, opl
+    return abcd
 
 def rayleigh_range_w0(w0):
     """
@@ -56,6 +70,7 @@ def abcd_stability(abcd):
         CavStab = False
     else:
         print("Error:Invalid abcd matrix")
+        CavStab = False
     return AD, CavStab
         
 
