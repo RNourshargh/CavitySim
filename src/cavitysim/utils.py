@@ -41,5 +41,20 @@ def mirror_planar_normal():
     opl = 0 #By definition for a planar mirror
     return abcd, opl
 
+def abcd_stability(abcd):
+    """
+    Tests stability of a cavity defined by an abcd matrix.
+    """
+    AD = np.trace(abcd)
+    if (AD<=2) and (AD>=-2):
+        print("Cavity is stable")
+        print("A+D = " +str(AD))
+    elif (AD>2) or (AD<-2):
+        print("Cavity is unstable")
+        print("A+D = " +str(AD))
+    else:
+        print("Error:Invalid abcd matrix")
+    return AD
+        
 
 wavelength = 780E-9
