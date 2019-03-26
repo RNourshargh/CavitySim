@@ -1,7 +1,7 @@
 import numpy as np
 
 
-from cavitysim.utils import path_free_space, rayleigh_range_w0, radius_from_q, lens_thin_vacuum_abcd, mirror_planar_normal
+from cavitysim.utils import path_free_space, rayleigh_range_w0, radius_from_q, lens_thin_vacuum_abcd, mirror_planar_normal, abcd_stability
 
 
 def test_pathfreespace():
@@ -49,5 +49,16 @@ def test_mirrorplanarnorm():
     
     np.testing.assert_allclose(expected_abcd, result_abcd)
     assert expected_opl == result_opl    
+
+def test_abcdstability():
+    test_abcds = [np.matrix([[-0.3,13],[-0.07,-0.3]]), np.matrix([[1.3,13],[-0.07,1.5]])]
+    expected_results = [-0.6, True, 2.8, False]
+    
+    test_results = []
+    for matrix in test_abcds:
+        test_results += abcd_stability(matrix)
+        
+    assert test_results == expected_results    
+
 
 test_wavelength = 780E-9

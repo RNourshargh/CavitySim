@@ -49,12 +49,14 @@ def abcd_stability(abcd):
     if (AD<=2) and (AD>=-2):
         print("Cavity is stable")
         print("A+D = " +str(AD))
+        CavStab = True
     elif (AD>2) or (AD<-2):
         print("Cavity is unstable")
         print("A+D = " +str(AD))
+        CavStab = False
     else:
         print("Error:Invalid abcd matrix")
-    return AD
+    return AD, CavStab
         
 
 wavelength = 780E-9
