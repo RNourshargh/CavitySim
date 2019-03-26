@@ -1,7 +1,7 @@
 import numpy as np
 
 
-from cavitysim.utils import path_constant_index, rayleigh_range_w0, radius_from_q, lens_thin_vacuum_abcd, mirror_planar_normal, abcd_stability
+from cavitysim.utils import path_constant_index, rayleigh_range_w0, radius_from_q, lens_thin_vacuum_abcd, mirror_planar_normal, abcd_stability, lens_thin_vac
 
 
 def test_pathconstantindex():
@@ -60,5 +60,20 @@ def test_abcdstability():
         
     assert test_results == expected_results    
 
+def test_classlensthinvac():
+    test_lensthinvac50mm = lens_thin_vac(50e-3)
+    
+    expected_abcd= np.matrix([[1,0],[-20,1]])
+    expected_opl = 0
+    
+    result_abcd = test_lensthinvac50mm.abcd()
+    result_opl = test_lensthinvac50mm.opl()
+    
+    np.testing.assert_allclose(expected_abcd, result_abcd)
+    assert expected_opl == result_opl
+    
+     
+test_classlensthinvac()    
+    
 
 test_wavelength = 780E-9
