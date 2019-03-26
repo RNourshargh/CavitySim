@@ -10,6 +10,7 @@ def test_pathconstantindex():
 
     expected_abcd = np.array([[1, test_path_length], [0, 1]])
     expected_opl =  test_path_length*test_n0
+    
     result_abcd, result_opl = path_constant_index(test_path_length, test_n0)
 
     np.testing.assert_allclose(expected_abcd, result_abcd)
@@ -71,9 +72,6 @@ def test_classlensthinvac():
     
     np.testing.assert_allclose(expected_abcd, result_abcd)
     assert expected_opl == result_opl
-    
-     
-test_classlensthinvac()    
     
 
 test_wavelength = 780E-9

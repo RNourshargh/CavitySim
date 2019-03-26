@@ -19,12 +19,13 @@ class lens_thin_vac(object):
         return 0
   
 
-def path_constant_index(path_length):
+def path_constant_index(path_length, n0):
     """
     generate the abcd matrix for propagation in a medium of constant refractive index
     """
     abcd = np.array([[1, path_length], [0, 1]])
-    return abcd
+    opl = n0*path_length
+    return abcd , opl
 
 def rayleigh_range_w0(w0):
     """
@@ -72,6 +73,6 @@ def abcd_stability(abcd):
         print("Error:Invalid abcd matrix")
         CavStab = False
     return AD, CavStab
-        
+
 
 wavelength = 780E-9
