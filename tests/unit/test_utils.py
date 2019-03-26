@@ -52,8 +52,8 @@ def test_mirrorplanarnorm():
     assert expected_opl == result_opl    
 
 def test_abcdstability():
-    test_abcds = [np.matrix([[-0.3,13],[-0.07,-0.3]]), np.matrix([[1.3,13],[-0.07,1.5]])]
-    expected_results = [-0.6, True, 2.8, False]
+    test_abcds = [np.matrix([[-0.3,13],[-0.07,-0.3]]), np.matrix([[1.3,13],[-0.07,1.5]]),np.matrix([[-1.3,13],[-0.07,-1.8]])]
+    expected_results = [-0.6, True, 2.8, False,-3.1,False]
     
     test_results = []
     for matrix in test_abcds:
