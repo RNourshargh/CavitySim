@@ -17,9 +17,31 @@ class lens_thin_vac(object):
     def opl(self):
         """Calculate the optical path length for the thin lens"""
         return 0
-  
+    
+class path_constant_index(object):
+    """Propagation through a path of refractive index n
+    
+    Attributes:
+        d: path length
+        n: refractive index, default n=1
+    """
+    
+    def __init__(self,d,n=1):
+        self.d = d
+        self.n = n
+        
+    def abcd(self):
+        """Returns the abcd matrix for the propagation"""
+        return np.matrix([[1,self.d],[0 , 1]])
 
-def path_constant_index(path_length, n0):
+    def opl(self):
+        """Returns the optical path length for this propagation"""
+        return self.d*self.n
+    
+    
+
+
+def legacy_path_constant_index(path_length, n0):
     """
     generate the abcd matrix for propagation in a medium of constant refractive index
     """
@@ -65,13 +87,10 @@ def abcd_stability(abcd):
         print("Cavity is stable")
         print("A+D = " +str(AD))
         CavStab = True
-    else: #(AD>2) or (AD<-2):
+    else:
         print("Cavity is unstable")
         print("A+D = " +str(AD))
         CavStab = False
-#    else:
-#        print("Error:Invalid abcd matrix")
-#        CavStab = False
     return AD, CavStab
 
 
