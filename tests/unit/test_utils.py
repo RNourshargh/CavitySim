@@ -1,7 +1,7 @@
 import numpy as np
 
 
-from cavitysim.utils import legacy_path_constant_index, rayleigh_range_w0, radius_from_q, lens_thin_vacuum_abcd, mirror_planar_normal, abcd_stability, lens_thin_vac, path_constant_index
+from cavitysim.utils import legacy_path_constant_index, rayleigh_range_w0, radius_from_q, lens_thin_vacuum_abcd, mirror_planar_normal, abcd_stability, lens_thin_vac, path_constant_index, mirror_normal
 
 def test_pathconstantindex():
     test_path_length = 5.0
@@ -16,6 +16,25 @@ def test_pathconstantindex():
     
     np.testing.assert_allclose(expected_acbd,result_abcd)
     assert expected_opl == result_opl
+
+def test_mirrornormal():
+    test_rocs = [0.1,np.inf]
+    
+    expected_abcds = [np.array([[1,0],[-20,1]]),np.array([[1,0],[0,1]])]
+    expected_opls  = [0,0]
+    
+    result_abcds = []
+    result_opls = []
+    
+    for roc in test_rocs:
+        mirror = mirror_normal(roc)
+        result_abcds.append(mirror.abcd())
+        result_opls.append(mirror.opl())
+        
+    np.testing.assert_allclose(expected_abcds,result_abcds)
+    assert expected_opls == result_opls
+
+
 
 def test_legacypathconstantindex():
     test_path_length = 7.0

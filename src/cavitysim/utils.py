@@ -4,7 +4,7 @@ class lens_thin_vac(object):
     """A thin lens in a vacuum
     
     Attributes:
-        f: focal length
+        f: focal length (metres)
     """
     
     def __init__(self, f):
@@ -22,7 +22,7 @@ class path_constant_index(object):
     """Propagation through a path of refractive index n
     
     Attributes:
-        d: path length
+        d: path length (metres)
         n: refractive index, default n=1
     """
     
@@ -38,6 +38,22 @@ class path_constant_index(object):
         """Returns the optical path length for this propagation"""
         return self.d*self.n
     
+class mirror_normal(object):
+    """Reflection from a mirro of ROC R, (R>0 for concave mirrors)
+    
+    Attributes:
+        roc: Radius of curvature (metres), Default infinite (planar mirror)
+        
+    """
+    def __init__(self, roc=np.inf):
+        self.roc =roc
+    
+    def abcd(self):
+        """Returns abcd matrix for reflection from this mirror"""
+        return np.array([[1,0],[-2/self.roc , 1]])
+    def opl(self):
+        """returns the optical path length for reflection, 0"""
+        return 0
     
 
 
