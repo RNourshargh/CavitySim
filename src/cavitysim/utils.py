@@ -1,4 +1,53 @@
 import numpy as np
+#from abc import ABCMeta, abstractmethod
+import copy
+
+
+class cavity(object):
+    """An optical resonator.
+
+    Attributes:
+        elements: a list of optical elements (class objects) defining the cavity
+        linear: Boolean to indicate if the cavity is linear or standing wave. (Linear cavities must be defined from an end mirror)
+        n0: Refractive index of free space, default=1
+    """
+    
+    
+    def __init__(self,input_elements,linear,n0=1):
+        self.input_elements = input_elements
+        self.linear = linear
+        self.n0 = n0
+        self.unfolded = False
+        self.elements = copy.deepcopy(input_elements)
+        self.unfold()
+        
+        
+    def unfold(self):
+        """Unfold linear cavities"""
+        if self.linear == True and self.unfolded == False:#Check the cavity is linear and hasn't been unfolded
+            self.returntrip = self.elements[1:-1] #Slice off the end mirrors
+            self.returntrip.reverse() #reverse order of optical elements for the return trip
+            self.elements.extend(self.returntrip) #Add the reverse trip optics to the elements list
+            self.unfolded = True    #Record that the cavity has been unforlded
+        else:
+            self.unfolded = True    
+        
+    def abcd(self):
+        """Generates the abcd matrix for the cavity, Be cautious in linear cavities with thick lenses"""
+
+        self.elements_abcd_list = [] #Initialise list of abcd matrices
+        for element in self.elements:
+            #print(element)
+            #print(element.abcd())
+            self.elements_abcd_list.append(element.abcd()) #populate list of abcd matrices
+            
+        abcd_matrix = np.matrix([[1,0],[0,1]]) #Initialise cavity abcd matrix
+        
+        for matrix in self.elements_abcd_list:
+            abcd_matrix = np.matmul(abcd_matrix,matrix) #multiply element abcd matrices together
+            
+        return abcd_matrix
+            
 
 class lens_thin_vac(object):
     """A thin lens in a vacuum
