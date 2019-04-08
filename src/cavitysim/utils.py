@@ -171,4 +171,6 @@ def abcd_stability(abcd):
         CavStab = False
     return AD, CavStab
 
+"""cav = cavity([mirror_normal(0.2),path_constant_index(0.1),mirror_normal(0.2)],True)
+print(cav.stable())"""
 wavelength = 780E-9

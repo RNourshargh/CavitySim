@@ -131,5 +131,4 @@ def test_classlensthinvac():
     np.testing.assert_allclose(expected_abcd, result_abcd)
     assert expected_opl == result_opl
     
-test_cavity()
 test_wavelength = 780E-9
