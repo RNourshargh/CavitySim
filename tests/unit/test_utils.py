@@ -12,17 +12,22 @@ def test_cavity():
     """Test abcd trace function"""
     expected_ads = [-1, -1, 1.68]
     
+    """Test stable method"""
+    expected_stability = [True, True, True]
+    
     result_abcds =[]
     result_ads = []
+    result_stability = []
     
     for cavity_input in test_inputs:
         result_abcds.append(cavity(cavity_input[0],cavity_input[1]).abcd())
         result_ads.append(cavity(cavity_input[0],cavity_input[1]).ad())
+        result_stability.append(cavity(cavity_input[0],cavity_input[1]).stable())
         
     np.testing.assert_allclose(expected_abcds,result_abcds)
     np.testing.assert_allclose(expected_ads,result_ads)
-
-
+    np.testing.assert_allclose(expected_stability,result_stability)
+    
 
 def test_pathconstantindex():
     test_path_length = 5.0
@@ -126,5 +131,5 @@ def test_classlensthinvac():
     np.testing.assert_allclose(expected_abcd, result_abcd)
     assert expected_opl == result_opl
     
-
+test_cavity()
 test_wavelength = 780E-9

@@ -51,7 +51,15 @@ class cavity(object):
     def ad(self):
         """Returns the trace of the ABCD matrix. The cavity is stable if this is between -2 and 2"""
         return np.trace(self.abcd())
-      
+
+    def stable(self):
+        """Returns a boolean to indicate if the cavity is stable or not"""
+        AD = self.ad()
+        if (AD<=2) and (AD>=-2):
+            CavStab = True
+        else:
+            CavStab = False
+        return CavStab
 
 
 class lens_thin_vac(object):
