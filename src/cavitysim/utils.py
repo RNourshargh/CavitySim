@@ -127,7 +127,7 @@ def radius_from_q(q):
     """
     return np.sqrt(-wavelength/(np.pi*np.imag(1/q)))
 
-def lens_thin_vacuum_abcd(f):
+def legacy_lens_thin_vacuum_abcd(f):
     """
     Generates abcd matrix, for thin lens, focal length f (metres)
     """
@@ -135,7 +135,7 @@ def lens_thin_vacuum_abcd(f):
     opl = 0 #By definition for a thin lens
     return abcd, opl
 
-def mirror_planar_normal():
+def legacy_mirror_planar_normal():
     """
     Generates abcd matrix, for planar mirror at normal insidence
     """

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-from cavitysim.utils import legacy_path_constant_index, rayleigh_range_w0, radius_from_q, lens_thin_vacuum_abcd, mirror_planar_normal, abcd_stability, lens_thin_vac, path_constant_index, mirror_normal, cavity
+from cavitysim.utils import legacy_path_constant_index, rayleigh_range_w0, radius_from_q, legacy_lens_thin_vacuum_abcd, legacy_mirror_planar_normal, abcd_stability, lens_thin_vac, path_constant_index, mirror_normal, cavity
 
 def test_cavity():
     test_inputs = [([mirror_normal(0.2),path_constant_index(0.1),mirror_normal(0.2)],True),([mirror_normal(), path_constant_index(0.3), lens_thin_vac(0.2),path_constant_index(0.3),mirror_normal()],True),([mirror_normal(5),path_constant_index(0.3),mirror_normal(),path_constant_index(0.2),mirror_normal(),path_constant_index(0.3)],False)]
@@ -80,22 +80,22 @@ def test_radiusfromq():
     result_beam_radius = radius_from_q(test_q)
     np.testing.assert_allclose(expected_beam_radius, result_beam_radius)
     
-def test_lensthinvac():
+def test_legacylensthinvac():
     test_f = 0.1
     
     expected_abcd= np.matrix([[1,0],[-10,1]])
     expected_opl = 0   
     
-    result_abcd,result_opl = lens_thin_vacuum_abcd(test_f)
+    result_abcd,result_opl = legacy_lens_thin_vacuum_abcd(test_f)
     
     np.testing.assert_allclose(expected_abcd, result_abcd)
     assert expected_opl == result_opl
 
-def test_mirrorplanarnorm():
+def test_legacymirrorplanarnorm():
     expected_abcd= np.matrix([[1,0],[0,1]])
     expected_opl = 0   
     
-    result_abcd,result_opl = mirror_planar_normal()
+    result_abcd,result_opl = legacy_mirror_planar_normal()
     
     np.testing.assert_allclose(expected_abcd, result_abcd)
     assert expected_opl == result_opl    
