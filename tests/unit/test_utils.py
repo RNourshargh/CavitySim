@@ -6,17 +6,21 @@ from cavitysim.utils import legacy_path_constant_index, rayleigh_range_w0, radiu
 def test_cavity():
     test_inputs = [([mirror_normal(0.2),path_constant_index(0.1),mirror_normal(0.2)],True),([mirror_normal(), path_constant_index(0.3), lens_thin_vac(0.2),path_constant_index(0.3),mirror_normal()],True),([mirror_normal(5),path_constant_index(0.3),mirror_normal(),path_constant_index(0.2),mirror_normal(),path_constant_index(0.3)],False)]
     
-    """Test abcd matrices"""
+    """Test abcd matrix generation"""
     expected_abcds =[np.array([[0,0.1],[-10,-1]]),np.array([[-0.5,-0.15],[5,-0.5]]),np.array([[1,0.8],[-0.4,0.68]])]
     
+    """Test abcd trace function"""
+    expected_ads = [-1, -1, 1.68]
+    
     result_abcds =[]
+    result_ads = []
     
     for cavity_input in test_inputs:
         result_abcds.append(cavity(cavity_input[0],cavity_input[1]).abcd())
+        result_ads.append(cavity(cavity_input[0],cavity_input[1]).ad())
         
     np.testing.assert_allclose(expected_abcds,result_abcds)
-    
-test_cavity()        
+    np.testing.assert_allclose(expected_ads,result_ads)
 
 
 

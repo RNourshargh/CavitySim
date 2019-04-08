@@ -47,7 +47,12 @@ class cavity(object):
             abcd_matrix = np.matmul(abcd_matrix,matrix) #multiply element abcd matrices together
             
         return abcd_matrix
-            
+    
+    def ad(self):
+        """Returns the trace of the ABCD matrix. The cavity is stable if this is between -2 and 2"""
+        return np.trace(self.abcd())
+      
+
 
 class lens_thin_vac(object):
     """A thin lens in a vacuum
@@ -157,6 +162,5 @@ def abcd_stability(abcd):
         print("A+D = " +str(AD))
         CavStab = False
     return AD, CavStab
-
 
 wavelength = 780E-9
