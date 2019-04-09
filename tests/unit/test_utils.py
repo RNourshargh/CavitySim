@@ -4,16 +4,16 @@ import numpy as np
 from cavitysim.utils import legacy_path_constant_index, rayleigh_range_w0, radius_from_q, legacy_lens_thin_vacuum_abcd, legacy_mirror_planar_normal, abcd_stability, lens_thin_vac, path_constant_index, mirror_normal, cavity
 
 def test_cavity():
-    test_inputs = [([mirror_normal(0.2),path_constant_index(0.1),mirror_normal(0.2)],True),([mirror_normal(), path_constant_index(0.3), lens_thin_vac(0.2),path_constant_index(0.3),mirror_normal()],True),([mirror_normal(5),path_constant_index(0.3),mirror_normal(),path_constant_index(0.2),mirror_normal(),path_constant_index(0.3)],False)]
+    test_inputs = [([mirror_normal(0.2),path_constant_index(0.1),mirror_normal(0.2)],True),([mirror_normal(), path_constant_index(0.3), lens_thin_vac(0.2),path_constant_index(0.3),mirror_normal()],True),([mirror_normal(5),path_constant_index(0.3),mirror_normal(),path_constant_index(0.2),mirror_normal(),path_constant_index(0.3)],False),([mirror_normal(-0.2),path_constant_index(0.2), mirror_normal()],True)]
     
     """Test abcd matrix generation"""
-    expected_abcds =[np.array([[0,0.1],[-10,-1]]),np.array([[-0.5,-0.15],[5,-0.5]]),np.array([[1,0.8],[-0.4,0.68]])]
+    expected_abcds =[np.array([[0,0.1],[-10,-1]]),np.array([[-0.5,-0.15],[5,-0.5]]),np.array([[1,0.8],[-0.4,0.68]]),np.array([[1,0.4],[10,5]])]
     
     """Test abcd trace function"""
-    expected_ads = [-1, -1, 1.68]
+    expected_ads = [-1, -1, 1.68,6]
     
     """Test stable method"""
-    expected_stability = [True, True, True]
+    expected_stability = [True, True, True, False]
     
     result_abcds =[]
     result_ads = []
@@ -28,6 +28,7 @@ def test_cavity():
     np.testing.assert_allclose(expected_ads,result_ads)
     np.testing.assert_allclose(expected_stability,result_stability)
     
+
 
 def test_pathconstantindex():
     test_path_length = 5.0
