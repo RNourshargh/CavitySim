@@ -10,7 +10,7 @@ def test_cavity():
     expected_abcds =[np.array([[0,0.1],[-10,-1]]),np.array([[-0.5,-0.15],[5,-0.5]]),np.array([[1,0.8],[-0.4,0.68]]),np.array([[1,0.4],[10,5]])]
     
     """Test abcd trace function"""
-    expected_ads = [-1, -1, 1.68,6]
+    expected_ads = [-1, -1, 1.68, 6]
     
     """Test stable method"""
     expected_stability = [True, True, True, False]
@@ -27,6 +27,7 @@ def test_cavity():
     np.testing.assert_allclose(expected_abcds,result_abcds)
     np.testing.assert_allclose(expected_ads,result_ads)
     np.testing.assert_allclose(expected_stability,result_stability)
+    
     
 
 
