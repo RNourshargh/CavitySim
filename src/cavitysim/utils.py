@@ -11,8 +11,8 @@ class cavity(object):
         linear: Boolean to indicate if the cavity is linear or standing wave. (Linear cavities must be defined from an end mirror)
         n0: Refractive index of free space, default=1
     """
-    
-    
+
+
     def __init__(self,input_elements,linear,n0=1):
         self.input_elements = input_elements
         self.linear = linear
@@ -20,8 +20,8 @@ class cavity(object):
         self.unfolded = False
         self.elements = copy.deepcopy(input_elements)
         self.unfold()
-        
-        
+
+
     def unfold(self):
         """Unfold linear cavities"""
         if self.linear == True and self.unfolded == False:#Check the cavity is linear and hasn't been unfolded
@@ -30,8 +30,8 @@ class cavity(object):
             self.elements.extend(self.returntrip) #Add the reverse trip optics to the elements list
             self.unfolded = True    #Record that the cavity has been unforlded
         else:
-            self.unfolded = True    
-        
+            self.unfolded = True
+
     def abcd(self):
         """Generates the abcd matrix for the cavity, Be cautious in linear cavities with thick lenses"""
 
@@ -40,14 +40,13 @@ class cavity(object):
             #print(element)
             #print(element.abcd())
             self.elements_abcd_list.append(element.abcd()) #populate list of abcd matrices
-            
+
         abcd_matrix = np.matrix([[1,0],[0,1]]) #Initialise cavity abcd matrix
-        
         for matrix in self.elements_abcd_list:
             abcd_matrix = np.matmul(abcd_matrix,matrix) #multiply element abcd matrices together
-            
+
         return abcd_matrix
-    
+
     def ad(self):
         """Returns the trace of the ABCD matrix. The cavity is stable if this is between -2 and 2"""
         return np.trace(self.abcd())
@@ -62,47 +61,47 @@ class cavity(object):
         return CavStab
 
     def properties(self):
-        
+
         if (self.stable() == True):
             print("Cavity is stable")
             print("A+D = " +str(self.ad()))
         else:
             print("Cavity is unstable")
             print("A+D = " +str(self.ad()))
-            
+
         print(self.abcd())
         return
 
 class lens_thin_vac(object):
     """A thin lens in a vacuum
-    
+
     Attributes:
         f: focal length (metres)
     """
-    
+
     def __init__(self, f):
         self.f = f
-        
+
     def abcd(self):
         """Generate the abcd matrix for the thin lens"""
         return np.matrix([[1,0],[-1/(self.f) , 1]])
-    
+
     def opl(self):
         """Calculate the optical path length for the thin lens"""
         return 0
-    
+
 class path_constant_index(object):
     """Propagation through a path of refractive index n
-    
+
     Attributes:
         d: path length (metres)
         n: refractive index, default n=1
     """
-    
+
     def __init__(self,d,n=1):
         self.d = d
         self.n = n
-        
+
     def abcd(self):
         """Returns the abcd matrix for the propagation"""
         return np.matrix([[1,self.d],[0 , 1]])
@@ -110,24 +109,24 @@ class path_constant_index(object):
     def opl(self):
         """Returns the optical path length for this propagation"""
         return self.d*self.n
-    
+
 class mirror_normal(object):
     """Reflection from a mirro of ROC R, (R>0 for concave mirrors)
-    
+
     Attributes:
         roc: Radius of curvature (metres), Default infinite (planar mirror)
-        
+
     """
     def __init__(self, roc=np.inf):
         self.roc =roc
-    
+
     def abcd(self):
         """Returns abcd matrix for reflection from this mirror"""
         return np.array([[1,0],[-2/self.roc , 1]])
     def opl(self):
         """returns the optical path length for reflection, 0"""
         return 0
-    
+
 
 
 def legacy_path_constant_index(path_length, n0):
@@ -185,17 +184,17 @@ def abcd_stability(abcd):
 
 wavelength = 780E-9
 
-def linearcon50con100ad(l1,l2):
-    return cavity([mirror_normal(),path_constant_index(l1),lens_thin_vac(0.05),path_constant_index(l2),lens_thin_vac(0.1),path_constant_index(0.2),mirror_normal()],True).ad()
+# def linearcon50con100ad(l1,l2):
+#     return cavity([mirror_normal(),path_constant_index(l1),lens_thin_vac(0.05),path_constant_index(l2),lens_thin_vac(0.1),path_constant_index(0.2),mirror_normal()],True).ad()
 
-x = np.linspace(0.12, 0.16, 3)
-y = np.linspace(0.15, 0.19, 3)
-xx,yy = np.meshgrid(x,y)
+# x = np.linspace(0.12, 0.16, 3)
+# y = np.linspace(0.15, 0.19, 3)
+# xx,yy = np.meshgrid(x,y)
 
-print(x)
-print(y)
+# print(x)
+# print(y)
 
-z= linearcon50con100ad(x,0.17)
+# z= linearcon50con100ad(x,0.17)
 
 
 
