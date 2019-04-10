@@ -20,9 +20,11 @@ def test_cavity():
     result_stability = []
 
     for cavity_input in test_inputs:
-        result_abcds.append(cavity(cavity_input[0],cavity_input[1]).abcd())
-        result_ads.append(cavity(cavity_input[0],cavity_input[1]).ad())
-        result_stability.append(cavity(cavity_input[0],cavity_input[1]).stable())
+        test_cav = cavity(cavity_input[0],cavity_input[1])
+        result_abcds.append(test_cav.abcd())
+        result_ads.append(test_cav.ad())
+        result_stability.append(test_cav.stable())
+        test_cav.properties()
 
     np.testing.assert_allclose(expected_abcds,result_abcds, rtol=1e-7, atol=1e-10)
     np.testing.assert_allclose(expected_ads,result_ads)
