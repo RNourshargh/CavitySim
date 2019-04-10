@@ -61,6 +61,17 @@ class cavity(object):
             CavStab = False
         return CavStab
 
+    def properties(self):
+        
+        if (self.stable() == True):
+            print("Cavity is stable")
+            print("A+D = " +str(self.ad()))
+        else:
+            print("Cavity is unstable")
+            print("A+D = " +str(self.ad()))
+            
+        print(self.abcd())
+        return
 
 class lens_thin_vac(object):
     """A thin lens in a vacuum
@@ -171,6 +182,24 @@ def abcd_stability(abcd):
         CavStab = False
     return AD, CavStab
 
-"""cav = cavity([mirror_normal(0.2),path_constant_index(0.1),mirror_normal(0.2)],True)
-print(cav.stable())"""
+
 wavelength = 780E-9
+
+def linearcon50con100ad(l1,l2):
+    return cavity([mirror_normal(),path_constant_index(l1),lens_thin_vac(0.05),path_constant_index(l2),lens_thin_vac(0.1),path_constant_index(0.2),mirror_normal()],True).ad()
+
+x = np.linspace(0.12, 0.16, 3)
+y = np.linspace(0.15, 0.19, 3)
+xx,yy = np.meshgrid(x,y)
+
+print(x)
+print(y)
+
+z= linearcon50con100ad(x,0.17)
+
+
+
+
+"""Run the cavity script for the cavity I have already built"""
+#Con50Con100 = cavity([mirror_normal(),path_constant_index(0.14),lens_thin_vac(0.05),path_constant_index(0.17),lens_thin_vac(0.1),path_constant_index(0.2),mirror_normal()],True)
+
