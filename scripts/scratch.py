@@ -1,4 +1,4 @@
-from cavitysim.utils import cavity, mirror_normal, path_constant_index
+from cavitysim.utils import cavity, mirror_normal, path_constant_index, lens_thin_vac
 
 CAVITY_SETUP = [
     mirror_normal(0.2),
@@ -15,4 +15,21 @@ print("AD is: {}".format(excav.ad()))
 excav.properties()
 
 """Run the cavity script for the cavity I have already built"""
-#Con50Con100 = cavity([mirror_normal(),path_constant_index(0.14),lens_thin_vac(0.05),path_constant_index(0.17),lens_thin_vac(0.1),path_constant_index(0.2),mirror_normal()],True)
+Con50Con100 = cavity(
+    [
+        mirror_normal(),
+        path_constant_index(0.14),
+        lens_thin_vac(0.05),
+        path_constant_index(0.17),
+        lens_thin_vac(0.1),
+        path_constant_index(0.2),
+        mirror_normal()
+    ],
+    True
+)
+
+print("")
+print("Con50Con100 properties")
+print("ABCD is: {}".format(Con50Con100.abcd()))
+print("AD is: {}".format(Con50Con100.ad()))
+Con50Con100.properties()
