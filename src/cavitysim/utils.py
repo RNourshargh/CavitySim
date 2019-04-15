@@ -19,7 +19,9 @@ class cavity(object):
         self.n0 = n0
         self.unfolded = False
         self.elements = copy.deepcopy(input_elements)
+        self.wavelength = 780e-9
         self.unfold()
+        
 
 
     def unfold(self):
@@ -70,7 +72,16 @@ class cavity(object):
             print("A+D = " +str(self.ad()))
 
         print(self.abcd())
+        print(self.end_radius())
         return
+    
+    def end_radius(self):
+        """Returns the radius of the circulating beam in the transverse plane from which the cavity is defined"""
+        m = self.ad()/2
+        abcd = self.abcd()
+        B = abcd[0,1]
+        w = np.sqrt(abs(B)*self.wavelength/(np.pi) * np.sqrt(1/(1-m**2)))
+        return w
 
 class lens_thin_vac(object):
     """A thin lens in a vacuum

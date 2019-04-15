@@ -15,22 +15,27 @@ def test_cavity():
     """Test stable method"""
     expected_stability = [True, True, True, False]
 
+    """Test end_radius method"""
+    expected_endradii = [0.00016931952799938106, 0.0002073732235436865, 0.0006050383556457971, np.nan ]
+
+
     result_abcds =[]
     result_ads = []
     result_stability = []
+    result_endradii = []
 
     for cavity_input in test_inputs:
         test_cav = cavity(cavity_input[0],cavity_input[1])
         result_abcds.append(test_cav.abcd())
         result_ads.append(test_cav.ad())
         result_stability.append(test_cav.stable())
+        result_endradii.append(test_cav.end_radius())
         test_cav.properties()
-
+    
     np.testing.assert_allclose(expected_abcds,result_abcds, rtol=1e-7, atol=1e-10)
     np.testing.assert_allclose(expected_ads,result_ads)
     np.testing.assert_allclose(expected_stability,result_stability)
-
-
+    np.testing.assert_allclose(expected_endradii,result_endradii, rtol=1e-7, atol=1e-10, equal_nan=True)
 
 
 def test_pathconstantindex():
