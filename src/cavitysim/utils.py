@@ -21,7 +21,7 @@ class cavity(object):
         self.elements = copy.deepcopy(input_elements)
         self.wavelength = 780e-9
         self.unfold()
-        
+
 
 
     def unfold(self):
@@ -43,7 +43,7 @@ class cavity(object):
             #print(element.abcd())
             self.elements_abcd_list.append(element.abcd()) #populate list of abcd matrices
 
-        abcd_matrix = np.matrix([[1,0],[0,1]]) #Initialise cavity abcd matrix
+        abcd_matrix = np.array([[1,0],[0,1]]) #Initialise cavity abcd matrix
         for matrix in self.elements_abcd_list:
             abcd_matrix = np.matmul(abcd_matrix,matrix) #multiply element abcd matrices together
 
@@ -74,7 +74,7 @@ class cavity(object):
         print(self.abcd())
         print(self.end_radius())
         return
-    
+
     def end_radius(self):
         """Returns the radius of the circulating beam in the transverse plane from which the cavity is defined"""
         m = self.ad()/2
@@ -95,7 +95,7 @@ class lens_thin_vac(object):
 
     def abcd(self):
         """Generate the abcd matrix for the thin lens"""
-        return np.matrix([[1,0],[-1/(self.f) , 1]])
+        return np.array([[1,0],[-1/(self.f) , 1]])
 
     def opl(self):
         """Calculate the optical path length for the thin lens"""
@@ -115,7 +115,7 @@ class path_constant_index(object):
 
     def abcd(self):
         """Returns the abcd matrix for the propagation"""
-        return np.matrix([[1,self.d],[0 , 1]])
+        return np.array([[1,self.d],[0 , 1]])
 
     def opl(self):
         """Returns the optical path length for this propagation"""
@@ -165,7 +165,7 @@ def legacy_lens_thin_vacuum_abcd(f):
     """
     Generates abcd matrix, for thin lens, focal length f (metres)
     """
-    abcd = np.matrix([[1,0],[-1/f , 1]])
+    abcd = np.array([[1,0],[-1/f , 1]])
     opl = 0 #By definition for a thin lens
     return abcd, opl
 
@@ -173,7 +173,7 @@ def legacy_mirror_planar_normal():
     """
     Generates abcd matrix, for planar mirror at normal insidence
     """
-    abcd = np.matrix([[1,0],[0, 1]])
+    abcd = np.array([[1,0],[0, 1]])
     opl = 0 #By definition for a planar mirror
     return abcd, opl
 

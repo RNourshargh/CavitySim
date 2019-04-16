@@ -31,7 +31,7 @@ def test_cavity():
         result_stability.append(test_cav.stable())
         result_endradii.append(test_cav.end_radius())
         test_cav.properties()
-    
+
     np.testing.assert_allclose(expected_abcds,result_abcds, rtol=1e-7, atol=1e-10)
     np.testing.assert_allclose(expected_ads,result_ads)
     np.testing.assert_allclose(expected_stability,result_stability)
@@ -101,7 +101,7 @@ def test_radiusfromq():
 def test_legacylensthinvac():
     test_f = 0.1
 
-    expected_abcd= np.matrix([[1,0],[-10,1]])
+    expected_abcd= np.array([[1,0],[-10,1]])
     expected_opl = 0
 
     result_abcd,result_opl = legacy_lens_thin_vacuum_abcd(test_f)
@@ -110,7 +110,7 @@ def test_legacylensthinvac():
     assert expected_opl == result_opl
 
 def test_legacymirrorplanarnorm():
-    expected_abcd= np.matrix([[1,0],[0,1]])
+    expected_abcd= np.array([[1,0],[0,1]])
     expected_opl = 0
 
     result_abcd,result_opl = legacy_mirror_planar_normal()
@@ -119,7 +119,7 @@ def test_legacymirrorplanarnorm():
     assert expected_opl == result_opl
 
 def test_abcdstability():
-    test_abcds = [np.matrix([[-0.3,13],[-0.07,-0.3]]), np.matrix([[1.3,13],[-0.07,1.5]]),np.matrix([[-1.3,13],[-0.07,-1.8]])]
+    test_abcds = [np.array([[-0.3,13],[-0.07,-0.3]]), np.array([[1.3,13],[-0.07,1.5]]),np.array([[-1.3,13],[-0.07,-1.8]])]
     expected_results = [-0.6, True, 2.8, False,-3.1,False]
 
     test_results = []
@@ -131,7 +131,7 @@ def test_abcdstability():
 def test_classlensthinvac():
     test_lensthinvac50mm = lens_thin_vac(50e-3)
 
-    expected_abcd= np.matrix([[1,0],[-20,1]])
+    expected_abcd= np.array([[1,0],[-20,1]])
     expected_opl = 0
 
     result_abcd = test_lensthinvac50mm.abcd()
