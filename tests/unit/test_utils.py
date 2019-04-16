@@ -8,41 +8,41 @@ from cavitysim.utils import (
     legacy_lens_thin_vacuum_abcd,
     legacy_mirror_planar_normal,
     abcd_stability,
-    lens_thin_vac,
-    path_constant_index,
-    mirror_normal,
-    cavity,
+    LensThinVac,
+    PathConstantIndex,
+    MirrorNormal,
+    Cavity,
 )
 
 
-def test_cavity():
+def test_Cavity():
     test_inputs = [
-        ([mirror_normal(0.2), path_constant_index(0.1), mirror_normal(0.2)], True),
+        ([MirrorNormal(0.2), PathConstantIndex(0.1), MirrorNormal(0.2)], True),
         (
             [
-                mirror_normal(),
-                path_constant_index(0.3),
-                lens_thin_vac(0.2),
-                path_constant_index(0.3),
-                mirror_normal(),
+                MirrorNormal(),
+                PathConstantIndex(0.3),
+                LensThinVac(0.2),
+                PathConstantIndex(0.3),
+                MirrorNormal(),
             ],
             True,
         ),
         (
             [
-                mirror_normal(5),
-                path_constant_index(0.3),
-                mirror_normal(),
-                path_constant_index(0.2),
-                mirror_normal(),
-                path_constant_index(0.3),
+                MirrorNormal(5),
+                PathConstantIndex(0.3),
+                MirrorNormal(),
+                PathConstantIndex(0.2),
+                MirrorNormal(),
+                PathConstantIndex(0.3),
             ],
             False,
         ),
-        ([mirror_normal(-0.2), path_constant_index(0.2), mirror_normal()], True),
+        ([MirrorNormal(-0.2), PathConstantIndex(0.2), MirrorNormal()], True),
     ]
 
-    """Test abcd matrix generation"""
+    # Test abcd matrix generation
     expected_abcds = [
         np.array([[0, 0.1], [-10, -1]]),
         np.array([[-0.5, -0.15], [5, -0.5]]),
@@ -50,13 +50,13 @@ def test_cavity():
         np.array([[1, 0.4], [10, 5]]),
     ]
 
-    """Test abcd trace function"""
+    # Test abcd trace function
     expected_ads = [-1, -1, 1.68, 6]
 
-    """Test stable method"""
+    # Test stable method
     expected_stability = [True, True, True, False]
 
-    """Test end_radius method"""
+    # Test end_radius method
     expected_endradii = [
         0.00016931952799938106,
         0.0002073732235436865,
@@ -69,8 +69,8 @@ def test_cavity():
     result_stability = []
     result_endradii = []
 
-    for cavity_input in test_inputs:
-        test_cav = cavity(cavity_input[0], cavity_input[1])
+    for Cavity_input in test_inputs:
+        test_cav = Cavity(Cavity_input[0], Cavity_input[1])
         result_abcds.append(test_cav.abcd())
         result_ads.append(test_cav.ad())
         result_stability.append(test_cav.stable())
@@ -92,7 +92,7 @@ def test_pathconstantindex():
     expected_acbd = np.array([[1, test_path_length], [0, 1]])
     expected_opl = test_n0 * test_path_length
 
-    result_path = path_constant_index(test_path_length, test_n0)
+    result_path = PathConstantIndex(test_path_length, test_n0)
     result_abcd = result_path.abcd()
     result_opl = result_path.opl()
 
@@ -110,7 +110,7 @@ def test_mirrornormal():
     result_opls = []
 
     for roc in test_rocs:
-        mirror = mirror_normal(roc)
+        mirror = MirrorNormal(roc)
         result_abcds.append(mirror.abcd())
         result_opls.append(mirror.opl())
 
@@ -186,7 +186,7 @@ def test_abcdstability():
 
 
 def test_classlensthinvac():
-    test_lensthinvac50mm = lens_thin_vac(50e-3)
+    test_lensthinvac50mm = LensThinVac(50e-3)
 
     expected_abcd = np.array([[1, 0], [-20, 1]])
     expected_opl = 0

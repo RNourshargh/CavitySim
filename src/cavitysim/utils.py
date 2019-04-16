@@ -4,7 +4,7 @@ import numpy as np
 import copy
 
 
-class cavity(object):
+class Cavity(object):
     """An optical resonator.
 
     Attributes:
@@ -24,7 +24,8 @@ class cavity(object):
 
     def unfold(self):
         """Unfold linear cavities"""
-        if self.linear and not self.unfolded:  # Check the cavity is linear and hasn't been unfolded
+        # Check the cavity is linear and hasn't been unfolded
+        if self.linear and not self.unfolded:
             self.returntrip = self.elements[1:-1]  # Slice off the end mirrors
             self.returntrip.reverse()  # reverse order of optical elements for the return trip
             self.elements.extend(
@@ -67,7 +68,6 @@ class cavity(object):
         return CavStab
 
     def properties(self):
-
         if self.stable():
             print("Cavity is stable")
             print("A+D = " + str(self.ad()))
@@ -88,7 +88,7 @@ class cavity(object):
         return w
 
 
-class lens_thin_vac(object):
+class LensThinVac(object):
     """A thin lens in a vacuum
 
     Attributes:
@@ -107,7 +107,7 @@ class lens_thin_vac(object):
         return 0
 
 
-class path_constant_index(object):
+class PathConstantIndex(object):
     """Propagation through a path of refractive index n
 
     Attributes:
@@ -128,7 +128,7 @@ class path_constant_index(object):
         return self.d * self.n
 
 
-class mirror_normal(object):
+class MirrorNormal(object):
     """Reflection from a mirro of ROC R, (R>0 for concave mirrors)
 
     Attributes:
@@ -204,19 +204,3 @@ def abcd_stability(abcd):
         print("A+D = " + str(AD))
         CavStab = False
     return AD, CavStab
-
-# def linearcon50con100ad(l1,l2):
-#     return cavity([mirror_normal(),path_constant_index(l1),lens_thin_vac(0.05),path_constant_index(l2),lens_thin_vac(0.1),path_constant_index(0.2),mirror_normal()],True).ad()
-
-# x = np.linspace(0.12, 0.16, 3)
-# y = np.linspace(0.15, 0.19, 3)
-# xx,yy = np.meshgrid(x,y)
-
-# print(x)
-# print(y)
-
-# z= linearcon50con100ad(x,0.17)
-
-
-"""Run the cavity script for the cavity I have already built"""
-# Con50Con100 = cavity([mirror_normal(),path_constant_index(0.14),lens_thin_vac(0.05),path_constant_index(0.17),lens_thin_vac(0.1),path_constant_index(0.2),mirror_normal()],True)
