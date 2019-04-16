@@ -40,8 +40,6 @@ class Cavity(object):
 
         self.elements_abcd_list = []  # Initialise list of abcd matrices
         for element in self.elements:
-            # print(element)
-            # print(element.abcd())
             self.elements_abcd_list.append(
                 element.abcd()
             )  # populate list of abcd matrices
