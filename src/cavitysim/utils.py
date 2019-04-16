@@ -68,11 +68,10 @@ class Cavity(object):
     def properties(self):
         if self.stable():
             print("Cavity is stable")
-            print("A+D = " + str(self.ad()))
         else:
             print("Cavity is unstable")
-            print("A+D = " + str(self.ad()))
 
+        print("A+D = {}".format(self.ad()))
         print(self.abcd())
         print(self.end_radius())
         return
@@ -195,10 +194,10 @@ def abcd_stability(abcd):
     AD = np.trace(abcd)
     if (AD <= 2) and (AD >= -2):
         print("Cavity is stable")
-        print("A+D = " + str(AD))
         CavStab = True
     else:
         print("Cavity is unstable")
-        print("A+D = " + str(AD))
         CavStab = False
+
+    print("A+D = {}".format(AD))
     return AD, CavStab
