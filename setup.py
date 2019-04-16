@@ -9,9 +9,7 @@ AUTHOR = "Rustin Nourshargh"
 EMAIL = "rustin@hotmail.co.uk"
 URL = "https://github.com/RNourshargh/CavitySimMatlab"
 
-DESCRIPTION = (
-    "Simulation of different optical cavities using ABCD matricies from the constituent optical components."
-)
+DESCRIPTION = "Simulation of different optical cavities using ABCD matricies from the constituent optical components."
 README = "README.md"
 
 SOURCE_DIR = "src"
@@ -52,12 +50,7 @@ setup(
     #     "Operating System :: OS Independent",
     #     "Programming Language :: Python :: 3.6",
     # ],
-    keywords=[
-        "optical",
-        "cavity",
-        "simulation",
-        "abcd",
-    ],
+    keywords=["optical", "cavity", "simulation", "abcd"],
     packages=find_packages(SOURCE_DIR),  # no tests/docs in `src` so don't need exclude
     package_dir={"": SOURCE_DIR},
     install_requires=["numpy"],
