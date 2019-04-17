@@ -27,5 +27,14 @@ $(VENV_DIR): setup.py
 test: $(VENV_DIR)  ## run all the tests
 	$(VENV_DIR)/bin/pytest --cov=cavitysim -rfsxEX --cov-report term-missing
 
+format: $(VENV_DIR)  ## format the code using black and verify using flake8
+	@status=$$(git status --porcelain src tests); \
+	if test "x$${status}" = x; then \
+		$(VENV_DIR)/bin/black --exclude _version.py setup.py src tests; \
+		$(VENV_DIR)/bin/flake8 src tests; \
+	else \
+		echo Not trying any formatting. Working directory is dirty ... >&2; \
+	fi;
+
 variables:  ## show the value of all variables used in the Makefile
 	@echo "VENV_DIR" $(VENV_DIR)
