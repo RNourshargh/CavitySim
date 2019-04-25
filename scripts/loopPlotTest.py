@@ -10,9 +10,9 @@ for length1 in np.linspace(0.05, 0.15, num=10):
             MirrorNormal(),
             PathConstantIndex(0.4),
             LensThinVac(0.15), #Edmund, query 785nm coated lenses
-            PathConstantIndex(0.1625),
+            PathConstantIndex(length2),# Standard length 0.1625
             LensThinVac(0.012), #Thorlabs lens
-            PathConstantIndex(length1), #Standard length 11
+            PathConstantIndex(length1), #Standard length 0.11
             MirrorNormal()
         ]
         
