@@ -53,7 +53,7 @@ setup(
     keywords=["optical", "cavity", "simulation", "abcd"],
     packages=find_packages(SOURCE_DIR),  # no tests/docs in `src` so don't need exclude
     package_dir={"": SOURCE_DIR},
-    install_requires=["numpy"],
+    install_requires=["numpy","matplotlib"],
     extras_require={
         "docs": ["sphinx", "sphinx_rtd_theme"],
         "test": ["codecov", "pytest-cov", "pytest"],
