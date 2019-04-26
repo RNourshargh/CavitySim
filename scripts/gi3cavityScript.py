@@ -1,4 +1,4 @@
-from cavitysim.utils import cavity, mirror_normal, path_constant_index, lens_thin_vac
+from cavitysim.utils import Cavity, MirrorNormal, PathConstantIndex, LensThinVac
 
 
 #"""THe following setup produces a 6mm beam diameter and is hopefully less scary"""
@@ -23,10 +23,17 @@ cavity_elements_2 = [
         mirror_normal()
 ]
 
+GI3Cavity = cavity(cavity_elements_2, True)
+
+m = GI3Cavity.ad()/2
+
+EigenA = m + np.sqrt(m**2-1)
+EigenB = m - np.sqrt(m**2-1)
+
+print("EigenA:", EigenA)
+print("EigenB", EigenB)
+
+print(GI3Cavity.properties())
+print(GI3Cavity.end_radius())
 
 
-
-
-Con25Con100 = cavity(cavity_elements_2, True)
-print(Con25Con100.properties())
-print(Con25Con100.end_radius())
