@@ -5,9 +5,7 @@ import numpy as np
 
 #Generate lists for the lengths to be scanned
 path1 = np.linspace(0.05, 0.15, num = 300)
-path2 = np.linspace(0.161, 0.166, num = 300) 
-
-#xv, yv = np.meshgrid(path1,path2,sparse=False, indexing="ij")
+path2 = np.linspace(0.161, 0.166, num = 300)
 
 #Generate results arrays of the correct size 
 ad = 5*np.ones((len(path1),len(path2)))
