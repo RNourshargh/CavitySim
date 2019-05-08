@@ -83,6 +83,13 @@ class Cavity(object):
         B = abcd[0, 1]
         w = np.sqrt(abs(B) * self.wavelength / (np.pi) * np.sqrt(1 / (1 - m ** 2)))
         return w
+        
+    def Eigenvals(self):
+        m = self.ad()/2
+        EigenA = m + np.sqrt(m**2-1+0j)
+        EigenB = m - np.sqrt(m**2-1+0j)
+        Theta = np.arccos(m)
+        return EigenA, EigenB, Theta
 
 
 class LensThinVac(object):
@@ -110,11 +117,15 @@ class PathConstantIndex(object):
     Attributes:
         d: path length (metres)
         n: refractive index, default n=1
+        R: Reflectivity or reflectance, check if amplitude or power and units
+        A: Absorbtion or absorbance, check if amplitude or power and units
     """
 
-    def __init__(self, d, n=1):
+    def __init__(self, d, n=1, R=0, R):
         self.d = d
         self.n = n
+        self.R = R
+        self.A = A
 
     def abcd(self):
         """Returns the abcd matrix for the propagation"""
@@ -126,7 +137,7 @@ class PathConstantIndex(object):
 
 
 class MirrorNormal(object):
-    """Reflection from a mirro of ROC R, (R>0 for concave mirrors)
+    """Reflection from a mirror of ROC R, (R>0 for concave mirrors)
 
     Attributes:
         roc: Radius of curvature (metres), Default infinite (planar mirror)
