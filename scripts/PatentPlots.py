@@ -2,79 +2,138 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def CavityTransmission(freq, Finesse=100, Lroundtrip=1,Tmax=1,):
+def CavityTransmission(freq, Finesse, Lroundtrip=1,Tmax=1,):
     PhiRT = (freq*2*np.pi*Lroundtrip)/(3*10**8) 
-    return Tmax/(1+(2*F/np.pi)**2 *(np.sin(PhiRT/2))**2)
+    return Tmax/(1+(2*Finesse/np.pi)**2 *(np.sin(PhiRT/2))**2)
 
 
-"""Cavity Properties"""
-RoundtripLength =1 #Round trip optical path length in metres
-F = 20              #Cavity Finesse
 
-"""Generate frequency scan"""    
-FSR = (3*10**8)/RoundtripLength
-wavelength = (780*10**(-9))
+    
+def PrepareTransmissionPlot(freq_doppler,fig, plotnumber=1, RoundtripLength=5, Finesse=30, Compensated=True, Cavity=True):      
+    """Cavity Properties"""
+    RoundtripLength #Round trip optical path length in metres
+    Finesse         #Cavity Finesse
 
-freq780 = round(3*10**8/wavelength)
-freq0 = round(freq780/FSR)*FSR
-freqEnd = freq0+3*FSR
-freqs = np.linspace(freq0, freqEnd, num = 10000)
+    """Generate frequency scan"""    
+    FSR = (3*10**8)/RoundtripLength
+    wavelength = (780*10**(-9))
+
+    freq780 = round(3*10**8/wavelength)
+    freq0 = round(freq780/FSR)*FSR
+    freqEnd = freq0+3*FSR
+    freqs = np.linspace(freq0, freqEnd, num = 10000)
+    
+    def XaxisRescaler(xinput, offset=freq0+FSR, scalefactor=10**6):
+        return (xinput-offset)/scalefactor
 
 
-"""Pockels cell"""
-voltage = 0.2 #this should be set to fractions of a wavelength such that volatge = 0.5 is the application of a halfwave voltage to the crystal, THis code is for single pass    
-DeltaLroundtrip = (voltage/2)*wavelength # Half the shift is provided to each of the two polarisations
-DeltaFrequency = (voltage/2)*FSR
+    """Generate Laser Frequencies and Pockels Cell Voltage"""
+    #freq_doppler = FSR/10
+    print("Doppler frequency is:", freq_doppler/10**6,"MHz")
 
+    """Pockels cell"""
+    voltage = freq_doppler*2/FSR #This calculates the correct applied voltage in units of Vhalf wave to compensate for the doppler shift
+    print("A Pockels cell voltage of:", voltage, "Vhwv will compensate for the doppler shift")  
+    DeltaLroundtrip = (voltage/2)*wavelength # Half the shift is provided to each of the two polarisations
+    DeltaFrequency = (voltage/2)*FSR
 
-"""Generate Cavity Tranmsission Data"""
-transmission = []
-transmissionP1 = []
-transmissionP2 = []
-for freq in freqs:
-    transmission.append(CavityTransmission(freq, Finesse=F, Lroundtrip=RoundtripLength))
-    transmissionP1.append(CavityTransmission(freq, Finesse=F, Lroundtrip = RoundtripLength-DeltaLroundtrip))
-    transmissionP2.append(CavityTransmission(freq, Finesse=F, Lroundtrip = RoundtripLength+DeltaLroundtrip))
+    #laser1
+    laser1freq =freq0+FSR-freq_doppler
+    laser1freqlist =np.array([laser1freq,laser1freq])
+    laser1ampFree =np.array([0,1])
     
 
-#print(freqs[np.argmax(transmission)])
+    #laser2
+    laser2freq = freq0+2*FSR+freq_doppler
+    laser2freqlist =np.array([laser2freq,laser2freq])
+    laser2ampFree =np.array([0,1])
+    #laser2ampTrans =np.array([0, CavityTransmission(laser2freq, Finesse, Lroundtrip = RoundtripLength-DeltaLroundtrip)])
 
-
-"""Generate Laser Frequencies"""
-freq_doppler = FSR/21
-laserfreqs = [freq0+FSR-freq_doppler,freq0+2*FSR+freq_doppler]  
-
-#laser1
-laser1freq =freq0+FSR-freq_doppler
-laser1freqlist =[laser1freq,laser1freq]
-laser1ampFree =[0,1]
-laser1ampTrans =[0, CavityTransmission(laser1freq, Finesse=F, Lroundtrip = RoundtripLength+DeltaLroundtrip)]
-
-#laser2
-laser2freq = freq0+2*FSR+freq_doppler
-laser2freqlist =[laser2freq,laser2freq]
-laser2ampFree =[0,1]
-laser2ampTrans =[0, CavityTransmission(laser2freq, Finesse=F, Lroundtrip = RoundtripLength-DeltaLroundtrip)]
-
-
+    """Generate Cavity Tranmsission Data"""
+    transmission = []
+    transmissionP1 = []
+    transmissionP2 = []
+    
+    
+    
+    
+    """Generate subPlot Data"""
+    axes = fig.add_subplot(3, 1, plotnumber)
+    axes.set_title('Doppler Shift: {:.0f}MHz'.format(freq_doppler/10**6))
+    axes.set_ylabel('Transmitted Power (a.u.)')
+    axes.set_xlabel('Relative Optical Frequency (MHz)')
+    axes.set_xlim(XaxisRescaler(freq0+FSR/2), XaxisRescaler(freq0+5*FSR/2))
+    
+    
+    if Cavity and Compensated :
+        laser1ampTrans =np.array([0, CavityTransmission(laser1freq, Finesse, Lroundtrip = RoundtripLength+DeltaLroundtrip)])
+        laser2ampTrans =np.array([0, CavityTransmission(laser2freq, Finesse, Lroundtrip = RoundtripLength-DeltaLroundtrip)])
+        for freq in freqs:
+            transmission.append(CavityTransmission(freq, Finesse, Lroundtrip=RoundtripLength))
+            transmissionP1.append(CavityTransmission(freq, Finesse, Lroundtrip = RoundtripLength-DeltaLroundtrip))
+            transmissionP2.append(CavityTransmission(freq, Finesse, Lroundtrip = RoundtripLength+DeltaLroundtrip))
+        Polarisation1 = axes.plot(XaxisRescaler(freqs), transmissionP1, label = "Polarisation 1")
+        Polarisation2 = axes.plot(XaxisRescaler(freqs), transmissionP2, label = "Polarisation 2")
+        UncompensatedTransmission = axes.plot(XaxisRescaler(freqs), transmission, "b", linestyle="dashed")
+        Raman1 = axes.plot(XaxisRescaler(laser1freqlist),laser1ampTrans, "r", label='Raman 1')
+        Raman2 = axes.plot(XaxisRescaler(laser2freqlist),laser2ampTrans, "m", label='Raman 2')
+        axes.legend([Raman1, Raman2, Polarisation1, Polarisation2])
+        
+    
+    if Cavity and Compensated == False:
+        laser1ampTrans =np.array([0, CavityTransmission(laser1freq, Finesse, Lroundtrip = RoundtripLength)])
+        laser2ampTrans =np.array([0, CavityTransmission(laser2freq, Finesse, Lroundtrip = RoundtripLength)])
+        for freq in freqs:
+            transmission.append(CavityTransmission(freq, Finesse, Lroundtrip=RoundtripLength))
+        UncompensatedTransmission = axes.plot(XaxisRescaler(freqs), transmission, "b", label="Cavity Transmission")
+        Raman1 = axes.plot(XaxisRescaler(laser1freqlist),laser1ampTrans, "r", label='Raman 1')
+        Raman2 = axes.plot(XaxisRescaler(laser2freqlist),laser2ampTrans, "m", label='Raman 2')
+        axes.legend([Raman1, Raman2, UncompensatedTransmission])
+        
+        
+    if Cavity == False and Compensated == False:
+        for freq in freqs:
+            transmission.append(CavityTransmission(freq, Finesse, Lroundtrip=RoundtripLength))
+        UncompensatedTransmission = axes.plot(XaxisRescaler(freqs), transmission, "b", linestyle="dashed")
+        Raman1 = axes.plot(XaxisRescaler(laser1freqlist),laser1ampFree, "r", label='Raman 1')
+        Raman2 = axes.plot(XaxisRescaler(laser2freqlist),laser2ampFree, "m", label='Raman 2')
+        axes.legend([Raman1, Raman2])
+    
+    axes.legend(loc="upper right")    
+    return freq0, FSR
 
 
  
-"""Generates single plot cavity transmission"""
-fig = plt.figure(figsize=(10.0, 7.0))
-axes1 = fig.add_subplot(1, 1, 1)
-axes1.set_title('Transmitted Power against frequency')
-axes1.set_ylabel('Transmitted Power (a.u.)')
-axes1.set_xlabel('Optical Frequency')
-axes1.set_xlim(freq0+FSR/2, freq0+5*FSR/2) 
-subplot1=axes1.plot(freqs, transmission, linestyle="dashed")
-#subplot1=axes1.plot(freqs, transmissionP1)
-#subplot1=axes1.plot(freqs, transmissionP2)
-#subplot1=axes1.plot(laser1freqlist,laser1ampTrans)
-#subplot1=axes1.plot(laser2freqlist,laser2ampTrans)
-subplot1=axes1.plot(laser1freqlist,laser1ampFree)
-subplot1=axes1.plot(laser2freqlist,laser2ampFree)
+"""Generates a figure and 3 subplots for compensated or uncompensated doppler shifts"""
+def FigureAssembler(Title, Compensated = True, Cavity = True, RoundtripLength=5, DopplerShift=10*10**6, Finesse=30, save=False, show=True):
+    fig = plt.figure(figsize=(10.0, 9.0))
+    fig.suptitle(Title)
+    #subplot1, freq0, FSR = 
+    PrepareTransmissionPlot(0, plotnumber=1, RoundtripLength=RoundtripLength, Compensated=Compensated, Cavity=Cavity, fig=fig, Finesse=Finesse)
+    PrepareTransmissionPlot(1*DopplerShift, plotnumber=2,RoundtripLength=RoundtripLength, Compensated=Compensated, Cavity=Cavity, fig=fig,Finesse=Finesse)
+    PrepareTransmissionPlot(2*DopplerShift, plotnumber=3,RoundtripLength=RoundtripLength,Compensated=Compensated, Cavity=Cavity, fig=fig,Finesse=Finesse)
+    fig.tight_layout()
+    fig.subplots_adjust(top=0.92)
+    
+    if save:
+        plt.savefig('plots/{}.png'.format(Title))
+        plt.savefig('plots/{}.pdf'.format(Title))
+        plt.savefig('plots/{}.eps'.format(Title))
+    if show:
+        plt.show()
+    return fig
+    
 
-fig.tight_layout()
-plt.show()
-#[freq0+2.2e8,freq0+2.2e8], [0,1] )[0,CavityTransmission(freq0+2.2e8, Finesse=F, Lroundtrip=RoundtripLength)]
+
+"""Variable to adjust cavity settings in a serries of plots"""    
+plottingFinesse =20
+plottingDoppler = 2.5*10**6
+plottingRoundTripLength = 5 #round trip length used to generate the plots. Measured in metres
+saveplots = True
+showplots = False
+    
+figure1 = FigureAssembler(Title='Compensated Doppler Shift', Compensated = True, Cavity = True, RoundtripLength = plottingRoundTripLength, DopplerShift = plottingDoppler, Finesse = plottingFinesse, save=saveplots, show = showplots)
+figure2 = FigureAssembler(Title='Uncompensated Doppler Shift', Compensated = False, Cavity = True, RoundtripLength = plottingRoundTripLength, DopplerShift = plottingDoppler, Finesse = plottingFinesse, save=saveplots, show = showplots)
+figure3 = FigureAssembler(Title='Free space Doppler Shift', Compensated = False, Cavity = False, RoundtripLength = plottingRoundTripLength, DopplerShift = plottingDoppler, Finesse = plottingFinesse, save=saveplots, show = showplots)
+
+#print(freqs[np.argmax(transmission)])
