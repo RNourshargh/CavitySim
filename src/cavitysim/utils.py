@@ -84,10 +84,8 @@ class Cavity(object):
 
         return abcd_matrix
         
-    def reindex(self, list=[0,1,2,3], n=2):
-        
+    def reindex(self, list=[0,1,2,3], n=1):
         newlist = list[n:] + list[:n]
-        
         return(newlist) 
 
     def ad(self):
