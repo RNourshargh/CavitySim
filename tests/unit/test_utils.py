@@ -113,9 +113,9 @@ def test_Cavity():
     # Test reindex function
 
     test_reindex1 = Cavity.reindex([0, 1, 2, 3], n=2)
-    test_reindex2 = Cavity.reindex([2, 5, 7, 8, 9], n=3)
-    expected_reindexout1 = [2, 3, 0, 1]
-    expected_reindexout2 = [9, 2, 5, 7, 8]
+    test_reindex2 = Cavity.reindex([2, 5, 7, 8, 9], n=4)
+    expected_reindexout1 = np.array([2, 3, 0, 1])
+    expected_reindexout2 = np.array([9, 2, 5, 7, 8])
     np.testing.assert_allclose(expected_reindexout1, test_reindex1)
     np.testing.assert_allclose(expected_reindexout2, test_reindex2)
 

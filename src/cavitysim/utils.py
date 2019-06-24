@@ -68,7 +68,7 @@ class Cavity(object):
                 i
             )  # fill index list with the indicies in their original order
 
-        newindexlist = indexlist[n:] + indexlist[:n]  # reorder the index list
+        newindexlist = Cavity.reindex(indexlist,n) # reorder the index list
 
         shifted_abcd_list = [
             abcd_list[i] for i in newindexlist
@@ -82,7 +82,7 @@ class Cavity(object):
 
         return abcd_matrix
 
-    def reindex(self, list=[0, 1, 2, 3], n=1):
+    def reindex(list, n=1):
         newlist = list[n:] + list[:n]
         return newlist
 
