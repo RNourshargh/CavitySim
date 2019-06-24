@@ -53,26 +53,25 @@ def test_Cavity():
 
     # Test shifted abcds
     expected_shiftabcds2 = [
-    np.array([[  0. ,   0.1],[-10. ,  -1. ]]),
-    np.array([[-2. , -0.6],[ 5. ,  1. ]]),
-    np.array([[ 0.8 ,  0.74],[-0.4 ,  0.88]]), 
-    np.array([[ 3. ,  0.8],[10. ,  3. ]]),
+        np.array([[0.0, 0.1], [-10.0, -1.0]]),
+        np.array([[-2.0, -0.6], [5.0, 1.0]]),
+        np.array([[0.8, 0.74], [-0.4, 0.88]]),
+        np.array([[3.0, 0.8], [10.0, 3.0]]),
     ]
 
     expected_shiftabcds3 = [
-    np.array([[ -1. ,   0.1],[-10. ,   0. ]]), 
-    np.array([[ 1. , -0.6],[ 5. , -2. ]]), 
-    np.array([[ 0.8 ,  0.74],[-0.4 ,  0.88]]),
-    np.array([[ 3. ,  0.8],[10. ,  3. ]]),
+        np.array([[-1.0, 0.1], [-10.0, 0.0]]),
+        np.array([[1.0, -0.6], [5.0, -2.0]]),
+        np.array([[0.8, 0.74], [-0.4, 0.88]]),
+        np.array([[3.0, 0.8], [10.0, 3.0]]),
     ]
 
-    
     # Test abcd trace function
     expected_ads = [-1, -1, 1.68, 6]
 
     # Test stable method
     expected_stability = [True, True, True, False]
-    
+
     # Test end_radius method
     expected_endradii = [
         0.00016931952799938106,
@@ -87,7 +86,6 @@ def test_Cavity():
     result_ads = []
     result_stability = []
     result_endradii = []
-    
 
     for Cavity_input in test_inputs:
         test_cav = Cavity(Cavity_input[0], Cavity_input[1])
@@ -100,23 +98,26 @@ def test_Cavity():
         test_cav.properties()
 
     np.testing.assert_allclose(expected_abcds, result_abcds, rtol=1e-7, atol=1e-10)
-    np.testing.assert_allclose(expected_shiftabcds2, result_shiftedabcds2, rtol=1e-7, atol=1e-10)
-    np.testing.assert_allclose(expected_shiftabcds3, result_shiftedabcds3, rtol=1e-7, atol=1e-10)
+    np.testing.assert_allclose(
+        expected_shiftabcds2, result_shiftedabcds2, rtol=1e-7, atol=1e-10
+    )
+    np.testing.assert_allclose(
+        expected_shiftabcds3, result_shiftedabcds3, rtol=1e-7, atol=1e-10
+    )
     np.testing.assert_allclose(expected_ads, result_ads)
     np.testing.assert_allclose(expected_stability, result_stability)
     np.testing.assert_allclose(
         expected_endradii, result_endradii, rtol=1e-7, atol=1e-10, equal_nan=True
     )
-        
-    #Test reindex function
-    
-    test_reindex1 = Cavity.reindex([0,1,2,3], n=2)
-    test_reindex2 = Cavity.reindex([2,5,7,8,9],n=3)
-    expected_reindexout1 = [2,3,0,1]
-    expected_reindexout2 = [9,2,5,7,8]
-    np.testing.assert_allclose(expected_reindexout1,  test_reindex1)
-    np.testing.assert_allclose(expected_reindexout2,  test_reindex2)
-    
+
+    # Test reindex function
+
+    test_reindex1 = Cavity.reindex([0, 1, 2, 3], n=2)
+    test_reindex2 = Cavity.reindex([2, 5, 7, 8, 9], n=3)
+    expected_reindexout1 = [2, 3, 0, 1]
+    expected_reindexout2 = [9, 2, 5, 7, 8]
+    np.testing.assert_allclose(expected_reindexout1, test_reindex1)
+    np.testing.assert_allclose(expected_reindexout2, test_reindex2)
 
 
 def test_pathconstantindex():
@@ -173,29 +174,29 @@ def test_rayleighrangew0():
 
     assert expected_rayleigh_range == result_rayleigh_range
 
+
 def test_radiusfromabcd():
-     #test values
+    # test values
     test_wavelength = 780e-9
     test_abcds = [
         np.array([[0, 0.1], [-10, -1]]),
         np.array([[-0.5, -0.15], [5, -0.5]]),
         np.array([[1, 0.8], [-0.4, 0.68]]),
-        np.array([[1, 0.4], [10, 5]])
+        np.array([[1, 0.4], [10, 5]]),
     ]
     expected_endradii = [
         0.00016931952799938106,
         0.0002073732235436865,
         0.0006050383556457971,
-        np.nan
+        np.nan,
     ]
-    result_radii =[]
-    
+    result_radii = []
+
     for abcd in test_abcds:
         result_radii.append(radius_from_abcd(abcd, test_wavelength))
     np.testing.assert_allclose(expected_endradii, result_radii)
-    
-    
-    
+
+
 def test_radiusfromq():
     test_q = 0.5 + 1j * np.pi * (0.1e-3) ** 2 / test_wavelength
 
