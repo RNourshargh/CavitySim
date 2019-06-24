@@ -31,26 +31,64 @@ class Cavity(object):
             self.elements.extend(
                 self.returntrip
             )  # Add the reverse trip optics to the elements list
-            self.unfolded = True  # Record that the cavity has been unforlded
+            self.unfolded = True  # Record that the cavity has been unfolded
         else:
             self.unfolded = True
 
+    
     def abcd(self):
         """Generates the abcd matrix for the cavity, Be cautious in linear cavities with thick lenses"""
 
-        self.elements_abcd_list = []  # Initialise list of abcd matrices
-        for element in self.elements:
-            self.elements_abcd_list.append(
+        elements_abcd_list = []  # Initialise list of abcd matrices
+        elements_list = self.elements
+            
+        for element in elements_list:
+            elements_abcd_list.append(
                 element.abcd()
             )  # populate list of abcd matrices
 
-        abcd_matrix = np.array([[1, 0], [0, 1]])  # Initialise cavity abcd matrix
-        for matrix in self.elements_abcd_list:
+        abcd_matrix = np.identity(2)  # Initialise cavity abcd matrix
+        for matrix in elements_abcd_list:
             abcd_matrix = np.matmul(
                 abcd_matrix, matrix
             )  # multiply element abcd matrices together
 
         return abcd_matrix
+        
+        
+    def abcd_shift(self, n=1):
+        """Generates the abcd matrix for the cavity, shifted by n elements from it's start"""
+
+        abcd_list = []  # Initialise list of abcd matrices
+        elements_list = self.elements #set that list equal to the input elements
+            
+        for element in elements_list:
+            abcd_list.append(
+                element.abcd()
+            )  # populate list of abcd matrices]
+            
+        indexlist = [] #generate a new list for the indicies
+
+        for i in range(len(elements_list)):
+            indexlist.append(i) #fill index list with the indicies in their original order
+        
+        newindexlist = indexlist[n:] + indexlist[:n] #reorder the index list
+        
+        shifted_abcd_list = [abcd_list[i] for i in newindexlist] #generate an abcd list with the shifted indicies
+
+        abcd_matrix = np.identity(2)  # Initialise cavity abcd matrix
+        for matrix in shifted_abcd_list:
+            abcd_matrix = np.matmul(
+                abcd_matrix, matrix
+            )  # multiply element abcd matrices together
+
+        return abcd_matrix
+        
+    def reindex(self, list=[0,1,2,3], n=2):
+        
+        newlist = list[n:] + list[:n]
+        
+        return(newlist) 
 
     def ad(self):
         """Returns the trace of the ABCD matrix. The cavity is stable if this is between -2 and 2"""
@@ -90,8 +128,19 @@ class Cavity(object):
         EigenB = m - np.sqrt(m**2-1+0j)
         Theta = np.arccos(m)
         return EigenA, EigenB, Theta
-
-
+        
+    def radii_list(self):
+        """Loops over the list of cavity elements and caculates the waist at each of them"""
+        elementlist = copy.deepcopy(self.elements)
+        
+        self.radii_list = []
+        
+        for i in range(len(elementlist)):
+            loopabcd = self.abcd_shift(n=i)
+            self.radii_list.append(radius_from_abcd(loopabcd, self.wavelength))
+            
+        return self.radii_list
+            
 class LensThinVac(object):
     """A thin lens in a vacuum
 
@@ -118,10 +167,10 @@ class PathConstantIndex(object):
         d: path length (metres)
         n: refractive index, default n=1
         R: Reflectivity or reflectance, check if amplitude or power and units
-        A: Absorbtion or absorbance, check if amplitude or power and units
+        A: Absorbtion or absorbance, check if amplitude or power and units, or if I should be using transmission coefficients
     """
 
-    def __init__(self, d, n=1, R=0, R):
+    def __init__(self, d, n=1, R=0, A=0):
         self.d = d
         self.n = n
         self.R = R
@@ -171,14 +220,21 @@ def rayleigh_range_w0(w0, wavelength=780e-9):
     """
     zr = np.pi * w0 ** 2 / wavelength
     return zr
-
-
+    
+def radius_from_abcd(abcd, wavelength):
+    """
+    Calculates the 1/e^2 radius from an abcd matrix and a wavelenth inside an optical cavity
+    """
+    m = np.trace(abcd)/2
+    B = abcd[0, 1]
+    w = np.sqrt(abs(B) * wavelength / (np.pi) * np.sqrt(1 / (1 - m ** 2)))
+    return w
+    
 def radius_from_q(q, wavelength=780e-9):
     """
     Calculates the beam radius w from q the complex beam parameter at the point q is definied
     """
     return np.sqrt(-wavelength / (np.pi * np.imag(1 / q)))
-
 
 def legacy_lens_thin_vacuum_abcd(f):
     """
@@ -188,7 +244,6 @@ def legacy_lens_thin_vacuum_abcd(f):
     opl = 0  # By definition for a thin lens
     return abcd, opl
 
-
 def legacy_mirror_planar_normal():
     """
     Generates abcd matrix, for planar mirror at normal insidence
@@ -196,7 +251,6 @@ def legacy_mirror_planar_normal():
     abcd = np.array([[1, 0], [0, 1]])
     opl = 0  # By definition for a planar mirror
     return abcd, opl
-
 
 def abcd_stability(abcd):
     """
