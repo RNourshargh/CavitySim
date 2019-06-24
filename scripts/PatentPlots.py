@@ -69,8 +69,8 @@ def PrepareTransmissionPlot(freq_doppler,fig, plotnumber, RoundtripLength, Fines
         laser2ampTrans =np.array([0, CavityTransmission(laser2freq, Finesse, Lroundtrip = RoundtripLength-DeltaLroundtrip)])
         for freq in freqs:
             transmission.append(CavityTransmission(freq, Finesse, Lroundtrip=RoundtripLength))
-            transmissionP1.append(CavityTransmission(freq, Finesse, Lroundtrip = RoundtripLength-DeltaLroundtrip))
-            transmissionP2.append(CavityTransmission(freq, Finesse, Lroundtrip = RoundtripLength+DeltaLroundtrip))
+            transmissionP1.append(CavityTransmission(freq, Finesse, Lroundtrip = RoundtripLength+DeltaLroundtrip))
+            transmissionP2.append(CavityTransmission(freq, Finesse, Lroundtrip = RoundtripLength-DeltaLroundtrip))
         Polarisation1 = axes.plot(XaxisRescaler(freqs), transmissionP1, label = "Polarisation 1")
         Polarisation2 = axes.plot(XaxisRescaler(freqs), transmissionP2, label = "Polarisation 2")
         UncompensatedTransmission = axes.plot(XaxisRescaler(freqs), transmission, "b", linestyle="dashed", label = "Uncompensated")

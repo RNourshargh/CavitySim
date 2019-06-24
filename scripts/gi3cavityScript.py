@@ -30,6 +30,9 @@ GI3CavityReversed = Cavity(reversed_cavity_elements, True)
 
 CavityInputRadius = GI3CavityReversed.end_radius()
 
+print( GI3Cavity.radii_list())
+
+
 print("Cavity Input radius is:", CavityInputRadius)
 
 FibreOutRadius = 0.00043
