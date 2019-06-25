@@ -66,13 +66,20 @@ def test_Cavity():
         np.array([[3.0, 0.8], [10.0, 3.0]]),
     ]
 
+    """Test radii_list function"""
+    expected_radii_lists = [
+    [0.00016931952799938106, 0.00016931952799938106, 0.00016931952799938106, 0.00016931952799938106],
+    [0.0002073732235436865, 0.0002073732235436865, 0.000414746447087373, 0.000414746447087373, 0.0002073732235436865, 0.0002073732235436865, 0.000414746447087373, 0.000414746447087373],
+    [0.0006050383556457971, 0.000605038355645797, 0.0005819072571444502, 0.0005819072571444502, 0.0005819072571444503, 0.0005819072571444503],
+    ]
+
     # Test abcd trace function
     expected_ads = [-1, -1, 1.68, 6]
 
     # Test stable method
     expected_stability = [True, True, True, False]
 
-    # Test end_radius method
+    """ Test end_radius method"""
     expected_endradii = [
         0.00016931952799938106,
         0.0002073732235436865,
@@ -86,6 +93,7 @@ def test_Cavity():
     result_ads = []
     result_stability = []
     result_endradii = []
+    result_radiilist = []
 
     for Cavity_input in test_inputs:
         test_cav = Cavity(Cavity_input[0], Cavity_input[1])
@@ -95,7 +103,13 @@ def test_Cavity():
         result_endradii.append(test_cav.end_radius())
         result_shiftedabcds2.append(test_cav.abcd_shift(n=2))
         result_shiftedabcds3.append(test_cav.abcd_shift(n=3))
+        
         test_cav.properties()
+    """Testing radii_list fuction"""
+    for Cavity_input in test_inputs[:-1]:
+        test_cav = Cavity(Cavity_input[0], Cavity_input[1])
+        iteration_radii_list = test_cav.radii_list()
+        result_radiilist.append(iteration_radii_list)
 
     np.testing.assert_allclose(expected_abcds, result_abcds, rtol=1e-7, atol=1e-10)
     np.testing.assert_allclose(
@@ -109,6 +123,11 @@ def test_Cavity():
     np.testing.assert_allclose(
         expected_endradii, result_endradii, rtol=1e-7, atol=1e-10, equal_nan=True
     )
+    np.testing.assert_allclose(
+        expected_radii_lists, result_radiilist, rtol=1e-7, atol=1e-10, equal_nan=True
+    )
+
+
 
     # Test reindex function
 

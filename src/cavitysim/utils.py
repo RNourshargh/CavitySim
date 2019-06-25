@@ -129,13 +129,13 @@ class Cavity(object):
         """Loops over the list of cavity elements and caculates the waist at each of them"""
         elementlist = copy.deepcopy(self.elements)
 
-        self.radii_list = []
+        self.radii_list_out = []
 
         for i in range(len(elementlist)):
             loopabcd = self.abcd_shift(n=i)
-            self.radii_list.append(radius_from_abcd(loopabcd, self.wavelength))
+            self.radii_list_out.append(radius_from_abcd(loopabcd, self.wavelength))
 
-        return self.radii_list
+        return self.radii_list_out
 
 
 class LensThinVac(object):
