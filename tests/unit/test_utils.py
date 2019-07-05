@@ -145,9 +145,7 @@ def test_Cavity():
         expected_endradii, result_endradii, rtol=1e-7, atol=1e-10, equal_nan=True
     )
     for exp, res in zip(expected_radii_lists, result_radiilist):
-        np.testing.assert_allclose(
-            res, exp, rtol=1e-7, atol=1e-10, equal_nan=True
-        )
+        np.testing.assert_allclose(res, exp, rtol=1e-7, atol=1e-10, equal_nan=True)
 
     # Test reindex function
 
