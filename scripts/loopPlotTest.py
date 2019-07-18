@@ -1,3 +1,4 @@
+
 from cavitysim.utils import Cavity, MirrorNormal, PathConstantIndex, LensThinVac
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
