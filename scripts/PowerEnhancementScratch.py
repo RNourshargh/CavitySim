@@ -35,7 +35,7 @@ def PE_finesse(Rin,Rout, Art):
 """User Inputs:"""
 Numloops = 1000
 Routput = 0.995
-InternalIntensityLossRT =0.09
+InternalIntensityLossRT =0.03
 InputReflectances = np.linspace(0.8, 0.99, Numloops)
 #print(InputReflectances)
 
@@ -61,7 +61,7 @@ print("Maximum enhancement Finesse is :", maxEnhancementFinesse)
 print("Optimum input reflectance for power enhancement:", maxEnhancementReflectance)
     
 
-"""Generates plot for a single length l1"""
+"""Generates plot for fixed round trip loss"""
 fig = plt.figure(figsize=(10.0, 7.0))
 axes1 = fig.add_subplot(2, 1, 1)
 axes1.set_title('Circulating Intensity Enhancement: Internal Loss {}'.format(InternalIntensityLossRT))
