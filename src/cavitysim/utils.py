@@ -270,44 +270,44 @@ def abcd_stability(abcd):
     return AD, CavStab
 
 
-def PE_Lossless_Mirror_Coefficients(Int_Reflectance):
-    """
-    Calculates the amplitude and power reflection and transmission coefficients from the power reflectance for a lossless mirror
-    """
-    amp_reflectance = np.sqrt(Int_Reflectance)
-    Int_Transmission = 1 - Int_Reflectance
-    amp_transmission = np.sqrt(Int_Transmission)
-    return Int_Reflectance, amp_reflectance, Int_Transmission, amp_transmission
+# def PE_Lossless_Mirror_Coefficients(Int_Reflectance):
+# """
+# Calculates the amplitude and power reflection and transmission coefficients from the power reflectance for a lossless mirror
+# """
+# amp_reflectance = np.sqrt(Int_Reflectance)
+# Int_Transmission = 1 - Int_Reflectance
+# amp_transmission = np.sqrt(Int_Transmission)
+# return Int_Reflectance, amp_reflectance, Int_Transmission, amp_transmission
 
 
-def PE_Lossy_Round_Trip_Coefficients(Int_Absorbtion):
-    """
-    Calculates the amplitude and power tranmission and absorbtion coefficients from the power absorbtion
-    """
-    amp_absorbtion = np.sqrt(Int_Absorbtion)
-    Int_Transmission = 1 - Int_Absorbtion
-    amp_transmission = np.sqrt(Int_Transmission)
-    return Int_Absorbtion, amp_absorbtion, Int_Transmission, amp_transmission
+# def PE_Lossy_Round_Trip_Coefficients(Int_Absorbtion):
+# """
+# Calculates the amplitude and power tranmission and absorbtion coefficients from the power absorbtion
+# """
+# amp_absorbtion = np.sqrt(Int_Absorbtion)
+# Int_Transmission = 1 - Int_Absorbtion
+# amp_transmission = np.sqrt(Int_Transmission)
+# return Int_Absorbtion, amp_absorbtion, Int_Transmission, amp_transmission
 
 
-def PE_Intensity_Enhancement_LosslessMirror(Rin, Rout, Art):
-    """
-    Calculates the power/ intestity enhancement ratio circulating inside a cavity from the power reflectivies of the intput and output mirror (lossless) and the power absorbtion coefficient
-    """
-    Rin, rin, Tin, tin = PE_Lossless_Mirror_Coefficients(Rin)
-    Rout, rout, Tout, tout = PE_Lossless_Mirror_Coefficients(Rout)
-    I_Abs, amp_abs, I_Trans, amp_trans = PE_Lossy_Round_Trip_Coefficients(Art)
-    Intensity_Enhancement_Ratio = tin ** 2 / (1 - rin * rout * amp_trans) ** 2
+# def PE_Intensity_Enhancement_LosslessMirror(Rin, Rout, Art):
+# """
+# Calculates the power/ intestity enhancement ratio circulating inside a cavity from the power reflectivies of the intput and output mirror (lossless) and the power absorbtion coefficient
+# """
+# Rin, rin, Tin, tin = PE_Lossless_Mirror_Coefficients(Rin)
+# Rout, rout, Tout, tout = PE_Lossless_Mirror_Coefficients(Rout)
+# I_Abs, amp_abs, I_Trans, amp_trans = PE_Lossy_Round_Trip_Coefficients(Art)
+# Intensity_Enhancement_Ratio = tin ** 2 / (1 - rin * rout * amp_trans) ** 2
 
-    # totalloss1= 1-Rin*Rout*I_Trans
-    # totalloss2= 1-Rin +1-Rout +Art
-    return Intensity_Enhancement_Ratio  # , totalloss1, totalloss2
+# totalloss1= 1-Rin*Rout*I_Trans
+# totalloss2= 1-Rin +1-Rout +Art
+# return Intensity_Enhancement_Ratio  # , totalloss1, totalloss2
 
 
-def PE_finesse(Rin, Rout, Art):
-    """
-    Calculates the finesse from the power reflectivies of the intput and output mirror (lossless) and the power absorbtion coefficient
-    """
-    Total_RT_loss = (1 - Rin) + (1 - Rout) + Art
-    finesse = 2 * np.pi / (Total_RT_loss)
-    return finesse
+# def PE_finesse(Rin, Rout, Art):
+# """
+# Calculates the finesse from the power reflectivies of the intput and output mirror (lossless) and the power absorbtion coefficient
+# """
+# Total_RT_loss = (1 - Rin) + (1 - Rout) + Art
+# finesse = 2 * np.pi / (Total_RT_loss)
+# return finesse
