@@ -174,8 +174,8 @@ class PathConstantIndex(object):
         self.A = A
 
     def abcd(self):
-        """Returns the abcd matrix for the propagation"""
-        return np.array([[1, self.d], [0, 1]])
+        """Returns the abcd matrix for the propagation, Using Siegman's convention which requires corrections to ROCs curvatures, when measured in a material with n>1, see pages 585 and 784"""
+        return np.array([[1, self.d / self.n], [0, 1]])
 
     def opl(self):
         """Returns the optical path length for this propagation"""

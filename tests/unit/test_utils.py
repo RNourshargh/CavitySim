@@ -161,7 +161,7 @@ def test_pathconstantindex():
     test_path_length = 5.0
     test_n0 = 1.5
 
-    expected_acbd = np.array([[1, test_path_length], [0, 1]])
+    expected_acbd = np.array([[1, test_path_length / test_n0], [0, 1]])
     expected_opl = test_n0 * test_path_length
 
     result_path = PathConstantIndex(test_path_length, test_n0)
