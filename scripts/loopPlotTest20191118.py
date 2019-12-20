@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import numpy as np
 
-Title = "BeamRadiusContour200mm"
+Title = "ExtendedBeamRadiusContour200mm"
 
 #Generate lists for the lengths to be scanned
-path1 = np.linspace(0.10, 0.2, num = 500)
-path2 = np.linspace(0.161, 0.164, num = 300)
+path1 = np.linspace(0.04, 0.2, num = 1000)
+path2 = np.linspace(0.161, 0.167, num = 400)
 
 #Generate results arrays of the correct size 
 ad = 5*np.ones((len(path1),len(path2)))
@@ -68,5 +68,7 @@ fig.colorbar(subplot1, ax=axes1)
 fig.colorbar(subplot2, ax=axes2)
 
 fig.tight_layout()
-
+plt.savefig('plots/{}AD.png'.format(Title))
+plt.savefig('plots/{}AD.pdf'.format(Title))
+plt.savefig('plots/{}AD.eps'.format(Title))
 plt.show()

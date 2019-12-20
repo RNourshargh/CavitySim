@@ -2,17 +2,18 @@ from cavitysim.utils import Cavity, MirrorNormal, PathConstantIndex, LensThinVac
 import numpy as np
 
 
-
-
 cavity_elements = [
-        MirrorNormal(),
-        PathConstantIndex(0.4),
-        LensThinVac(0.15), #Edmund, query 785nm coated lenses
-        PathConstantIndex(0.1625),# Standard length 0.1625
-        LensThinVac(0.012), #Thorlabs lens
-        PathConstantIndex(0.15), #Standard length 0.11
-        MirrorNormal()
+    MirrorNormal(),
+    PathConstantIndex(0.4),
+    LensThinVac(0.15),  # Edmund, query 785nm coated lenses
+    PathConstantIndex(0.1625),  # Standard length 0.1625
+    LensThinVac(0.012),  # Thorlabs lens
+    PathConstantIndex(0.05),  
+    PathConstantIndex(0.05,1.7),
+    PathConstantIndex(0.05),
+    MirrorNormal(),
 ]
+
 
 GI3Cavity = Cavity(cavity_elements, True)
 print("ABCD:", GI3Cavity.abcd())
