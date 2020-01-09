@@ -1,19 +1,19 @@
 "Header Size"           ,15
-"Model Name"            ,"DLM4000       "
-"Comment"               ,"Test comment here                                                                                                                             "
-"BlockNumber"           ,1               ,1
-"TraceName"             ,"CH1           ","CH3           "
-"BlockSize"             ,1250            ,1250
-"VUnit"                 ,"V             ","V             "
-"SampleRate"            ,1250000.0       ,1250000.0
-"HResolution"           ,8.000000E-07    ,8.000000E-07
-"HOffset"               ,-9.992000E-04   ,-9.992000E-04
-"HUnit"                 ,"s             ","s             "
-"DisplayBlockSize"      ,1250            ,1250
-"DisplayPointNo."       ,1               ,1
-"Date"                  ,"2019/11/26","2019/11/26"
-"Time"                  ,"12:33:56.100895200    ","12:33:56.100895200    "
+"Model Name"            ,"Other model name       "
+"Comment"               ,"Test comment here                                                                                                                                "
+"BlockNumber"           ,1
+"TraceName"             ,"CH1           "
+"BlockSize"             ,1250
+"VUnit"                 ,"V             "
+"SampleRate"            ,1250000.0
+"HResolution"           ,8.000000E-07
+"HOffset"               ,-9.992000E-04
+"HUnit"                 ,"s             "
+"DisplayBlockSize"      ,1250
+"DisplayPointNo."       ,1
+"Date"                  ,"2019/11/26"
+"Time"                  ,"12:33:56.100895200    "
 
--999.20000E-06,       0.241E-03,
--998.40000E-06,       0.081E-03,
--997.60000E-06,       0.775E-03,
+  -999.20000E-06,       1E-06,
+  -998.40000E-06,       2E-06,
+  -997.60000E-06,       3E-06,

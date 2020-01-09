@@ -56,10 +56,7 @@ def _get_settings_key_value(inline):
 
         # none of the conversions worked, do nothing
 
-    if len(raw_split) == 2:
-        return raw_split
-    else:
-        return raw_split[0], raw_split[1:]
+    return raw_split[0], raw_split[1:]
 
 
 def read_octascope_output(filepath):
@@ -106,7 +103,12 @@ def read_octascope_output(filepath):
             key, value = _get_settings_key_value(fh.readline())
             raw_settings[key] = value
 
-    settings = pd.DataFrame(raw_settings)
+    try:
+        settings = pd.DataFrame(raw_settings)
+    except ValueError:
+        print("settings lines don't all have the same length")
+        raise
+
     settings = settings.set_index("TraceName")
     settings.index.name = "Channel"
     settings = settings.T
@@ -114,7 +116,12 @@ def read_octascope_output(filepath):
     data = pd.read_csv(
         filepath, skiprows=no_header_lines, header=None, index_col=0
     ).dropna(axis=1)
-    data.columns = settings.columns
+    try:
+        data.columns = settings.columns
+    except ValueError:
+        print("settings columns don't match data columns")
+        raise
+
     data.index.name = "Time"
 
     output = {
