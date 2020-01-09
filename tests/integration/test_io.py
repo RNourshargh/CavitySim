@@ -37,12 +37,13 @@ def test_read_octascope_output(test_data_dir):
             "HOffset",
             "HUnit",
             "DisplayBlockSize",
-            "DisplayPointNo",
+            "DisplayPointNo.",
             "Date",
             "Time",
         ],
         columns=["CH1", "CH3"],
     )
+    exp_settings.columns.name = "Channel"
 
     res = read_octascope_output(source_csv_fullpath)
 
@@ -53,15 +54,16 @@ def test_read_octascope_output(test_data_dir):
     pd.testing.assert_frame_equal(res["settings"], exp_settings)
 
     # test first value
-    np.testing.assert_allclose(res["data"].loc["CH1", -999.20000e-06], 0.241e-03)
-    # test second value
-    np.testing.assert_allclose(res["data"].loc["CH3", -999.20000e-06], 121.88e-03)
-    # test middle value
-    np.testing.assert_allclose(res["data"].loc["CH1", -20.000000e-06], 0.084e-03)
-    # test last value
-    np.testing.assert_allclose(res["data"].loc["CH3", 0.0], 120.03e-03)
+    np.testing.assert_allclose(res["data"].loc[-999.20000e-06, "CH1"], 0.241e-03)
 
-    assert False
+    # test second value
+    np.testing.assert_allclose(res["data"].loc[-999.20000e-06, "CH3"], 121.88e-03)
+
+    # test middle value
+    np.testing.assert_allclose(res["data"].loc[-20.000000e-06, "CH1"], 0.084e-03)
+
+    # test last value
+    np.testing.assert_allclose(res["data"].loc[0.0, "CH3"], 120.03e-03)
 
 
 @pytest.mark.parametrize(
