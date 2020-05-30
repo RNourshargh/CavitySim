@@ -108,6 +108,12 @@ def test_Cavity():
         np.nan,
     ]
 
+    # Test GouyPhase
+    expected_GouyPhase = [2 * np.pi / 3, 4 * np.pi / 3, 0.5735131044, ]
+
+    # Test Eigenvals
+    # expected_Eigenvals = []
+
     result_abcds = []
     result_shiftedabcds2 = []
     result_shiftedabcds3 = []
@@ -115,6 +121,7 @@ def test_Cavity():
     result_stability = []
     result_endradii = []
     result_radiilist = []
+    result_GouyPhase = []
 
     for Cavity_input in test_inputs:
         test_cav = Cavity(Cavity_input[0], Cavity_input[1])
@@ -131,6 +138,7 @@ def test_Cavity():
         test_cav = Cavity(Cavity_input[0], Cavity_input[1])
         iteration_radii_list = test_cav.radii_list()
         result_radiilist.append(iteration_radii_list)
+        result_GouyPhase.append(test_cav.GouyPhase())
 
     np.testing.assert_allclose(expected_abcds, result_abcds, rtol=1e-7, atol=1e-10)
     np.testing.assert_allclose(
@@ -144,6 +152,7 @@ def test_Cavity():
     np.testing.assert_allclose(
         expected_endradii, result_endradii, rtol=1e-7, atol=1e-10, equal_nan=True
     )
+    np.testing.assert_allclose(expected_GouyPhase, result_GouyPhase, rtol=1e-7, atol=1e-10)
     for exp, res in zip(expected_radii_lists, result_radiilist):
         np.testing.assert_allclose(res, exp, rtol=1e-7, atol=1e-10, equal_nan=True)
 

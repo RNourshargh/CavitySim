@@ -122,8 +122,16 @@ class Cavity(object):
         m = self.ad() / 2
         EigenA = m + np.sqrt(m ** 2 - 1 + 0j)
         EigenB = m - np.sqrt(m ** 2 - 1 + 0j)
-        Theta = np.arccos(m)
-        return EigenA, EigenB, Theta
+        return EigenA, EigenB
+
+    def GouyPhase(self):
+        m = self.ad() / 2
+        abcd = self.abcd()
+        B = abcd[0, 1]
+        Theta = np.sign(B) * np.arccos(m)
+        if Theta < 0 :
+            Theta += 2 * np.pi
+        return Theta
 
     def radii_list(self):
         """Loops over the list of cavity elements and caculates the waist at each of them"""
