@@ -153,7 +153,7 @@ class Cavity(object):
         B = abcd[0, 1]
         C = abcd[1, 0]
         D = abcd[1, 1]
-        q = 1 / ((D-A)/2*B + i*np.sqrt(1-m**2)/abs(B) )
+        q = 1 / ((D-A)/2*B + 1i*np.sqrt(1-m**2)/abs(B) )
         return q
 
 
