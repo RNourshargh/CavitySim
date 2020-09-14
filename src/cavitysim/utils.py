@@ -243,6 +243,12 @@ def radius_from_q(q, wavelength=780e-9):
     """
     return np.sqrt(-wavelength / (np.pi * np.imag(1 / q)))
 
+def roc_from_q(q, wavelength=780e-9):
+    """
+    Calculates the beam roc R from q the complex beam parameter at the point q is definied
+    """
+    return 1 / np.real(1 / q)
+
 
 def legacy_lens_thin_vacuum_abcd(f):
     """
@@ -276,6 +282,16 @@ def abcd_stability(abcd):
 
     print("A+D = {}".format(AD))
     return AD, CavStab
+
+
+def abcd_transform(abcd, q0):
+    """Applied an abcd transformation to a complex beam parameter q"""
+    A = abcd[0, 0]
+    B = abcd[0, 1]
+    C = abcd[1, 0]
+    D = abcd[1, 1]
+    q = (A * q0 + B) / (C * q0 + D)
+    return q
 
 
 # def PE_Lossless_Mirror_Coefficients(Int_Reflectance):
