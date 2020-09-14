@@ -144,6 +144,17 @@ class Cavity(object):
             self.radii_list_out.append(radius_from_abcd(loopabcd, self.wavelength))
 
         return self.radii_list_out
+    
+    def q_stableMode(self):
+        """Calculates the q value for the stable eigenemode at the plane the abcd matrix is defined were one exists."""
+        m = self.ad() / 2
+        abcd = self.abcd()
+        A = abcd[0, 0]
+        B = abcd[0, 1]
+        C = abcd[1, 0]
+        D = abcd[1, 1]
+        q = 1 / ((D-A)/2*B + j*np.sqrt(1-m**2)/abs(B) )
+    return q
 
 
 class LensThinVac(object):
