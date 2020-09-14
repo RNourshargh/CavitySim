@@ -154,7 +154,7 @@ class Cavity(object):
         C = abcd[1, 0]
         D = abcd[1, 1]
         q = 1 / ((D-A)/2*B + j*np.sqrt(1-m**2)/abs(B) )
-    return q
+        return q
 
 
 class LensThinVac(object):
