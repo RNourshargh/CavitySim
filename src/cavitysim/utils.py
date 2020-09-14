@@ -13,13 +13,13 @@ class Cavity(object):
         n0: Refractive index of free space, default=1
     """
 
-    def __init__(self, input_elements, linear, n0=1):
+    def __init__(self, input_elements, linear, wavelength = 780e-9, n0=1):
         self.input_elements = input_elements
         self.linear = linear
         self.n0 = n0
         self.unfolded = False
         self.elements = copy.deepcopy(input_elements)
-        self.wavelength = 780e-9
+        self.wavelength = wavelength
         self.unfold()
 
     def unfold(self):
